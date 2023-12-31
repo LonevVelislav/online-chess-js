@@ -1,6 +1,7 @@
 import { onPawnHover, onPawnDrop } from "./peacesMovements/pawnMovements";
 import { onBishopDrop, onBishopHover } from "./peacesMovements/bishopMovements";
 import { onKnightHover, onKnightDrop } from "./peacesMovements/knightMovement";
+import { onRookDrop, onRookHover } from "./peacesMovements/rookMovements";
 
 export const renderBoard = (board) => {
     let dragging = {};
@@ -80,6 +81,13 @@ export const renderBoard = (board) => {
                 ) {
                     onKnightHover(e, board);
                 }
+
+                if (
+                    e.target.id.includes("ROOK") ||
+                    e.target.id.includes("rook")
+                ) {
+                    onRookHover(e, board);
+                }
             }
         });
 
@@ -134,7 +142,6 @@ export const renderBoard = (board) => {
                 clickedImage.id.includes("pawn")
             ) {
                 onPawnDrop(e, board, dragging);
-                clickedImage.style.position = "static";
             }
 
             if (
@@ -142,7 +149,6 @@ export const renderBoard = (board) => {
                 clickedImage.id.includes("bishop")
             ) {
                 onBishopDrop(e, board, dragging);
-                clickedImage.style.position = "static";
             }
 
             if (
@@ -150,8 +156,16 @@ export const renderBoard = (board) => {
                 clickedImage.id.includes("knight")
             ) {
                 onKnightDrop(e, board, dragging);
-                clickedImage.style.position = "static";
             }
+
+            if (
+                clickedImage.id.includes("ROOK") ||
+                clickedImage.id.includes("rook")
+            ) {
+                onRookDrop(e, board, dragging);
+            }
+
+            clickedImage.style.position = "static";
 
             document
                 .querySelectorAll(".peace")
