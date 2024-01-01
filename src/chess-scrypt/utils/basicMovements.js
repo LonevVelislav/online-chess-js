@@ -233,3 +233,60 @@ export const linesPositions = (starterR, starterC, board) => {
 
     return positions;
 };
+
+export const pawnBasicPositions = (starterR, starterC, board) => {
+    let positions = [];
+    const clickedPeace = board[starterR][starterC];
+    const color = clickedPeace.type;
+    const operators = {
+        white: (a, b) => a - b,
+        black: (a, b) => a + b,
+    };
+
+    if (clickedPeace.turn === 0) {
+        for (let i = 1; i <= 2; i++) {
+            if (board[operators[color](starterR, i)][starterC] !== 0) {
+                break;
+            }
+            positions.push([operators[color](starterR, i), starterC]);
+        }
+    } else {
+        for (let i = 1; i <= 1; i++) {
+            if (
+                operators[color](starterR, i) < board.length &&
+                operators[color](starterR, i) >= 0
+            ) {
+                if (board[operators[color](starterR, i)][starterC] !== 0) {
+                    break;
+                }
+                positions.push([operators[color](starterR, i), starterC]);
+            }
+        }
+    }
+
+    return positions;
+};
+
+export const pawnDiagonalPositions = (starterR, starterC, board) => {
+    let diagonals = [];
+    const color = board[starterR][starterC].type;
+
+    const operators = {
+        white: (a, b) => a - b,
+        black: (a, b) => a + b,
+    };
+
+    diagonals.push([operators[color](starterR, 1), starterC - 1]);
+    diagonals.push([operators[color](starterR, 1), starterC + 1]);
+    diagonals = diagonals.filter(
+        (pos) =>
+            pos[0] >= 0 &&
+            pos[0] < board.length &&
+            pos[1] >= 0 &&
+            pos[1] < board.length &&
+            board[pos[0]][pos[1]] !== 0 &&
+            board[pos[0]][pos[1]].type !== color
+    );
+
+    return diagonals;
+};
