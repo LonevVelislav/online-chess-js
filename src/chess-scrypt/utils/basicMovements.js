@@ -116,7 +116,7 @@ export const diagonalsPositions = (starterR, starterC, board) => {
     return positions;
 };
 
-export const LshapedPositions = (starterR, starterC, board) => {
+export const shapedLPositions = (starterR, starterC, board) => {
     const color = board[starterR][starterC].type;
     let positions = [];
     positions.push([starterR + 1, starterC + 2]);

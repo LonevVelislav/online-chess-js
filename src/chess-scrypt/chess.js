@@ -10,6 +10,7 @@ export const renderBoard = (board) => {
 
     const boardDomElement = document.querySelector(".board");
     boardDomElement.innerHTML = "";
+    boardDomElement.style.cursor = "pointer";
 
     const black = "#404255";
     const white = "#fdf0d5";
@@ -27,7 +28,6 @@ export const renderBoard = (board) => {
 
     function drawPeace(x, y, url, id, type, turn) {
         const image = document.createElement("img");
-        // image.draggable = true;
         image.className = "peace";
         image.style.zIndex = "1";
         image.src = url;
@@ -48,6 +48,7 @@ export const renderBoard = (board) => {
 
         image.addEventListener("click", function (e) {
             if (e.target.tagName === "IMG") {
+                boardDomElement.style.cursor = "none";
                 clickedImage = image;
                 image.style.position = "absolute";
                 document
@@ -187,6 +188,5 @@ export const renderBoard = (board) => {
     boardDomElement.addEventListener("click", dropClickedHandler);
 
     colorBoard();
-
     fillBoard();
 };
