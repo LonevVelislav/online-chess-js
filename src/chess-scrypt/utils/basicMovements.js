@@ -1,4 +1,4 @@
-export const diagonalsPositions = (starterR, starterC, board) => {
+export const diagonalsPositions = (starterR, starterC, board, length) => {
     let positions = [];
     const color = board[starterR][starterC].type;
 
@@ -7,7 +7,7 @@ export const diagonalsPositions = (starterR, starterC, board) => {
     let enemies3 = 0;
     let enemies4 = 0;
 
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (
             starterR - j >= 0 &&
             starterR - j < board.length &&
@@ -34,7 +34,7 @@ export const diagonalsPositions = (starterR, starterC, board) => {
         }
     }
 
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (
             starterR - j >= 0 &&
             starterR - j < board.length &&
@@ -60,7 +60,7 @@ export const diagonalsPositions = (starterR, starterC, board) => {
             }
         }
     }
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (
             starterR + j >= 0 &&
             starterR + j < board.length &&
@@ -86,7 +86,7 @@ export const diagonalsPositions = (starterR, starterC, board) => {
             }
         }
     }
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (
             starterR + j >= 0 &&
             starterR + j < board.length &&
@@ -141,7 +141,7 @@ export const shapedLPositions = (starterR, starterC, board) => {
     return positions;
 };
 
-export const linesPositions = (starterR, starterC, board) => {
+export const linesPositions = (starterR, starterC, board, length) => {
     let positions = [];
     const color = board[starterR][starterC].type;
     let enemies1 = 0;
@@ -149,7 +149,7 @@ export const linesPositions = (starterR, starterC, board) => {
     let enemies3 = 0;
     let enemies4 = 0;
 
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (starterR - j >= 0 && starterR - j < board.length) {
             if (
                 board[starterR - j][starterC].type === color &&
@@ -171,7 +171,7 @@ export const linesPositions = (starterR, starterC, board) => {
         }
     }
 
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (starterR + j >= 0 && starterR + j < board.length) {
             if (
                 board[starterR + j][starterC].type === color &&
@@ -192,7 +192,7 @@ export const linesPositions = (starterR, starterC, board) => {
             }
         }
     }
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (starterC - j >= 0 && starterC - j < board.length) {
             if (
                 board[starterR][starterC - j].type === color &&
@@ -213,7 +213,7 @@ export const linesPositions = (starterR, starterC, board) => {
             }
         }
     }
-    for (let j = 1; j < board.length; j++) {
+    for (let j = 1; j < length; j++) {
         if (starterC + j >= 0 && starterC + j < board.length) {
             if (
                 board[starterR][starterC + j].type === color &&

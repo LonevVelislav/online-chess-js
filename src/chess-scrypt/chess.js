@@ -3,6 +3,7 @@ import { onBishopDrop, onBishopHover } from "./peacesMovements/bishopMovements";
 import { onKnightHover, onKnightDrop } from "./peacesMovements/knightMovement";
 import { onRookDrop, onRookHover } from "./peacesMovements/rookMovements";
 import { onQeenHover, onQueenDrop } from "./peacesMovements/queenMovements";
+import { onKingDrop, onKingHover } from "./peacesMovements/kingMovement";
 
 export const renderBoard = (board) => {
     let dragging = {};
@@ -93,6 +94,9 @@ export const renderBoard = (board) => {
                 if (e.target.id === "QUEEN" || e.target.id === "queen") {
                     onQeenHover(e, board);
                 }
+                if (e.target.id === "KING" || e.target.id === "king") {
+                    onKingHover(e, board);
+                }
             }
         });
 
@@ -172,6 +176,9 @@ export const renderBoard = (board) => {
 
             if (clickedImage.id === "QUEEN" || clickedImage.id === "queen") {
                 onQueenDrop(e, board, dragging);
+            }
+            if (clickedImage.id === "KING" || clickedImage.id === "king") {
+                onKingDrop(e, board, dragging);
             }
 
             clickedImage.style.position = "static";

@@ -9,13 +9,23 @@ export const onBishopHover = (e, board) => {
 
     const startR = Number(e.target.parentElement.style.gridRowStart - 1);
     const startC = Number(e.target.parentElement.style.gridColumnStart - 1);
-    const validPositions = diagonalsPositions(startR, startC, board);
+    const validPositions = diagonalsPositions(
+        startR,
+        startC,
+        board,
+        board.length
+    );
 
     colorValidPositions(validPositions, startR, startC, board);
 };
 
 export const onBishopDrop = (e, board, dragging) => {
-    const validPositions = diagonalsPositions(dragging.r, dragging.c, board);
+    const validPositions = diagonalsPositions(
+        dragging.r,
+        dragging.c,
+        board,
+        board.length
+    );
 
     dropValidPositions(e, validPositions, board, dragging);
 };

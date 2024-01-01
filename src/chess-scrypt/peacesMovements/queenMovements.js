@@ -9,9 +9,12 @@ export const onQeenHover = (e, board) => {
 
     const startR = Number(e.target.parentElement.style.gridRowStart - 1);
     const startC = Number(e.target.parentElement.style.gridColumnStart - 1);
-    const validPositions = diagonalsPositions(startR, startC, board).concat(
-        linesPositions(startR, startC, board)
-    );
+    const validPositions = diagonalsPositions(
+        startR,
+        startC,
+        board,
+        board.length
+    ).concat(linesPositions(startR, startC, board, board.length));
     colorValidPositions(validPositions, startR, startC, board);
 };
 
@@ -19,7 +22,8 @@ export const onQueenDrop = (e, board, dragging) => {
     const validPositions = diagonalsPositions(
         dragging.r,
         dragging.c,
-        board
-    ).concat(linesPositions(dragging.r, dragging.c, board));
+        board,
+        board.length
+    ).concat(linesPositions(dragging.r, dragging.c, board, board.length));
     dropValidPositions(e, validPositions, board, dragging);
 };

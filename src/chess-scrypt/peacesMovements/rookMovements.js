@@ -10,12 +10,17 @@ export const onRookHover = (e, board) => {
     let startR = Number(e.target.parentElement.style.gridRowStart - 1);
     let startC = Number(e.target.parentElement.style.gridColumnStart - 1);
 
-    const validPositions = linesPositions(startR, startC, board);
+    const validPositions = linesPositions(startR, startC, board, board.length);
 
     colorValidPositions(validPositions, startR, startC, board);
 };
 
 export const onRookDrop = (e, board, dragging) => {
-    const validPositions = linesPositions(dragging.r, dragging.c, board);
+    const validPositions = linesPositions(
+        dragging.r,
+        dragging.c,
+        board,
+        board.length
+    );
     dropValidPositions(e, validPositions, board, dragging);
 };
