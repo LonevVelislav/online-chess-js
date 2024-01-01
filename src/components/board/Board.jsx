@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { renderBoard } from "../../chess-scrypt/chess.js";
+import { useEffect, useState } from "react";
+import { game } from "../../chess-scrypt/chess.js";
 
 export default function Board() {
     let board = [
@@ -128,9 +128,11 @@ export default function Board() {
             { id: "ROOK2", url: "/img/peaces/ROOK.png", type: "white" },
         ],
     ];
+    const [player1, setPlayer1] = useState({ name: "Velislav" });
+    const [player2, setPlayer2] = useState({ name: "Geri" });
 
     useEffect(() => {
-        renderBoard(board);
+        game(board, player1, player2);
     }, []);
     return (
         <>
