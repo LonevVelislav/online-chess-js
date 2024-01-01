@@ -1,6 +1,7 @@
 export const diagonalsPositions = (starterR, starterC, board) => {
     let positions = [];
-    const color = board[starterR][starterC];
+    const color = board[starterR][starterC].type;
+
     let enemies1 = 0;
     let enemies2 = 0;
     let enemies3 = 0;
@@ -116,6 +117,7 @@ export const diagonalsPositions = (starterR, starterC, board) => {
 };
 
 export const LshapedPositions = (starterR, starterC, board) => {
+    const color = board[starterR][starterC].type;
     let positions = [];
     positions.push([starterR + 1, starterC + 2]);
     positions.push([starterR - 1, starterC + 2]);
@@ -126,20 +128,22 @@ export const LshapedPositions = (starterR, starterC, board) => {
     positions.push([starterR - 2, starterC - 1]);
     positions.push([starterR - 2, starterC + 1]);
 
-    positions = positions.filter(
-        (el) =>
-            el[0] >= 0 &&
-            el[0] < board.length &&
-            el[1] >= 0 &&
-            el[1] < board.length
-    );
+    positions = positions
+        .filter(
+            (el) =>
+                el[0] >= 0 &&
+                el[0] < board.length &&
+                el[1] >= 0 &&
+                el[1] < board.length
+        )
+        .filter((el) => board[el[0]][el[1]].type !== color);
 
     return positions;
 };
 
 export const linesPositions = (starterR, starterC, board) => {
     let positions = [];
-    const color = board[starterR][starterC];
+    const color = board[starterR][starterC].type;
     let enemies1 = 0;
     let enemies2 = 0;
     let enemies3 = 0;
