@@ -1,7 +1,7 @@
-export default function Login() {
+export default function Register() {
     return (
         <main className="login-container">
-            <h6>Login</h6>
+            <h6>Register</h6>
             <form className="login-form">
                 <div>
                     <label htmlFor="email">username</label>
