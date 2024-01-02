@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "username is requred!"],
+        unique: true,
         trim: true,
         maxLength: [20, "username is too long, 20 characters max"],
     },
@@ -15,10 +16,16 @@ const userSchema = new mongoose.Schema({
         trim: true,
         select: false,
     },
+    playing: {
+        type: Boolean,
+    },
 });
 
 userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
+    if (this.isNew) {
+        this.playing = false;
+    }
     next();
 });
 

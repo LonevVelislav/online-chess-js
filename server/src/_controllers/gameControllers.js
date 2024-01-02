@@ -1,5 +1,10 @@
 const router = require("express").Router();
 const Game = require("../models/Game");
+const User = require("../models/User");
+
+const { protect, restrictToPlayers } = require("../middlewares/authMiddleware");
+const castError = require("../utils/castError");
+const filterObject = require("../utils/filterObject");
 
 router.get("/", async (req, res) => {
     const games = await Game.find();
@@ -15,7 +20,7 @@ router.get("/", async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: "fail",
-            message: err.message,
+            message: castError(err),
         });
     }
 });
@@ -32,13 +37,20 @@ router.get("/:id", async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: "fail",
-            message: err.message,
+            message: castError(err),
         });
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", protect, async (req, res) => {
     try {
+        if (req.body.board) {
+            throw new Error("invalid data! cant post your own boards!");
+        }
+
+        if (req.user.playing) {
+            throw new Error("you are in a game!");
+        }
         const newGame = await Game.create({
             board: [
                 [
@@ -202,7 +214,18 @@ router.post("/", async (req, res) => {
                     { id: "ROOK2", url: "/img/peaces/ROOK.png", type: "white" },
                 ],
             ],
+            player1: req.user._id,
         });
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                playing: true,
+            },
+            {
+                runValidators: true,
+                new: true,
+            }
+        );
 
         res.status(200).json({
             status: "success",
@@ -213,7 +236,81 @@ router.post("/", async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: "fail",
-            message: err.message,
+            message: castError(err),
+        });
+    }
+});
+
+router.post("/join/:id", protect, async (req, res) => {
+    try {
+        const game = await Game.findById(req.params.id);
+        if (!game) {
+            throw new Error("game does no longer exist!");
+        }
+
+        if (req.user._id.toString() === game.player1.toString()) {
+            throw new Error("cant play by ourself.");
+        }
+        if (req.user.playing) {
+            throw new Error("your are in a game!");
+        }
+
+        if (game.player2 === undefined && req.user._id !== game.player1) {
+            game.player2 = req.user;
+            await User.findByIdAndUpdate(
+                req.user._id,
+                {
+                    playing: true,
+                },
+                {
+                    runValidators: true,
+                    new: true,
+                }
+            );
+
+            await game.save();
+        }
+        res.status(200).json({
+            status: "success",
+            data: {
+                game,
+            },
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: castError(err),
+        });
+    }
+});
+
+router.patch("/move/:id", protect, restrictToPlayers, async (req, res) => {
+    try {
+        Object.keys(req.body).forEach((el) => {
+            if (el !== "board") {
+                throw new Error(
+                    "invalid data, can only change board positions!"
+                );
+            }
+        });
+        const filteredObject = filterObject(req.body, "board");
+        const game = await Game.findByIdAndUpdate(req.params.id, {
+            ...filteredObject,
+        });
+        if (!game) {
+            throw new Error("game does not exist!");
+        }
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                game,
+            },
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: castError(err),
         });
     }
 });
