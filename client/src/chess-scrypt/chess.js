@@ -5,12 +5,19 @@ import { onRookDrop, onRookHover } from "./peacesMovements/rookMovements";
 import { onQeenHover, onQueenDrop } from "./peacesMovements/queenMovements";
 import { onKingDrop, onKingHover } from "./peacesMovements/kingMovement";
 
-export const game = (board, player1, player2) => {
+export const game = (
+    board,
+    turn,
+    player1,
+    player2,
+    movePeaceHandler,
+    userId
+) => {
     const players = {
         white: player1,
         black: player2,
     };
-    let colorTurn = "white";
+    let colorTurn = turn;
 
     function renderBoard(board) {
         let dragging = {};
@@ -56,7 +63,8 @@ export const game = (board, player1, player2) => {
             image.addEventListener("click", function (e) {
                 if (
                     e.target.tagName === "IMG" &&
-                    e.target.dataset.type === colorTurn
+                    e.target.dataset.type === colorTurn &&
+                    players[colorTurn]._id === userId
                 ) {
                     boardDomElement.style.cursor = "none";
                     clickedImage = image;
@@ -161,7 +169,6 @@ export const game = (board, player1, player2) => {
             if (e.target.tagName === "DIV" && clickedImage.tagName === "IMG") {
                 const dropedR = Number(e.target.style.gridRowStart) - 1;
                 const dropedC = Number(e.target.style.gridColumnStart) - 1;
-                console.log(players[colorTurn].name);
                 if (
                     clickedImage.id.includes("PAWN") ||
                     clickedImage.id.includes("pawn")
@@ -207,8 +214,8 @@ export const game = (board, player1, player2) => {
                     .forEach((peace) => (peace.style.pointerEvents = "all"));
 
                 boardDomElement.style.cursor = "pointer";
+
                 renderBoard(board);
-                console.log(board);
                 boardDomElement.removeEventListener(
                     "click",
                     dropClickedHandler
@@ -217,9 +224,8 @@ export const game = (board, player1, player2) => {
                 const moved =
                     board[dropedR][dropedC] === dragging.peace &&
                     (dragging.r !== dropedR || dragging.c !== dropedC);
-
                 if (moved) {
-                    colorTurn = colorTurn === "white" ? "black" : "white";
+                    movePeaceHandler(board);
                 }
             }
         }

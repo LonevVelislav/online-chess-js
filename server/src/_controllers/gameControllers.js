@@ -4,10 +4,9 @@ const User = require("../models/User");
 
 const { protect, restrictToPlayers } = require("../middlewares/authMiddleware");
 const castError = require("../utils/castError");
-const filterObject = require("../utils/filterObject");
 
 router.get("/", async (req, res) => {
-    const games = await Game.find();
+    const games = await Game.find().populate("player1", "username");
 
     try {
         res.status(200).json({
@@ -27,7 +26,9 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        const game = await Game.findById(req.params.id);
+        const game = await Game.findById(req.params.id)
+            .populate("player1")
+            .populate("player2");
         res.status(200).json({
             status: "success",
             data: {
@@ -286,20 +287,31 @@ router.post("/join/:id", protect, async (req, res) => {
 
 router.patch("/move/:id", protect, restrictToPlayers, async (req, res) => {
     try {
+        let filteredObject = {};
         Object.keys(req.body).forEach((el) => {
-            if (el !== "board") {
+            if (el !== "board" && el !== "turn") {
                 throw new Error(
                     "invalid data, can only change board positions!"
                 );
             }
+            filteredObject[el] = req.body[el];
         });
-        const filteredObject = filterObject(req.body, "board");
-        const game = await Game.findByIdAndUpdate(req.params.id, {
-            ...filteredObject,
-        });
+
+        const game = await Game.findByIdAndUpdate(
+            req.params.id,
+            {
+                board: filteredObject.board,
+                turn: filteredObject.turn,
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
         if (!game) {
             throw new Error("game does not exist!");
         }
+        await game.save();
 
         res.status(200).json({
             status: "success",

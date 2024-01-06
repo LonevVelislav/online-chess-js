@@ -10,6 +10,20 @@ const gameSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "User",
     },
+    turn: {
+        type: String,
+    },
+});
+
+gameSchema.pre("save", async function (next) {
+    if (this.isNew) {
+        this.turn = "white";
+    } else {
+        console.log("update turn");
+        this.turn = this.turn === "white" ? "black" : "white";
+    }
+
+    next();
 });
 
 const Game = mongoose.model("Game", gameSchema);

@@ -25,6 +25,16 @@ body {
   background-size: cover;
 }
 
+.btn {
+  padding: 0.8rem;
+  background-color: #fdf0d5;
+  color: #404255;
+  font-size: 2rem;
+}
+a {
+  text-decoration: none;
+}
+
 input:focus,
 select:focus,
 textarea:focus,
@@ -34,6 +44,23 @@ button:focus {
 /* general --------- */
 /* home --------*/
 .home-page {
+  font-size: 2.4rem;
+  display: grid;
+  grid-template-columns: 50fr 50fr;
+  align-items: center;
+}
+.home-player-stats {
+  display: flex;
+  flex-direction: column;
+  background-color: #fdf0d5;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 3.2rem;
+}
+.home-player-stats div {
+  margin-bottom: 10rem;
+}
+.home-games-list {
 }
 
 /* home --------*/
@@ -81,4 +108,73 @@ button:focus {
   cursor: pointer;
 }
 
+.board-player1 {
+  font-size: 1.2rem;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.board-player2 {
+  font-size: 1.2rem;
+  color: white;
+  position: absolute;
+  top: 95%;
+  left: 95%;
+}
+
 /* board ----------*/
+
+/*error-message--------*/
+
+.error-message {
+  background-color: red;
+  padding: 0.8rem;
+}
+
+/*error-message--------*/
+
+/*game-card--------*/
+.game-card {
+  position: relative;
+  margin-left: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15rem;
+}
+.game-card button {
+  position: absolute;
+  margin: 1.2rem;
+}
+.game-card h6 {
+  position: absolute;
+  color: #fdf0d5;
+  top: 0;
+}
+.game-card img {
+  width: 100%;
+  border-radius: 50%;
+}
+.game-card span {
+  position: absolute;
+  color: #a7c957;
+  text-transform: uppercase;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/*game-card--------*/
+
+/*media queries--------------*/
+
+@media (max-width: 34em) {
+  html {
+    font-size: 45%;
+  }
+  .peace {
+    width: 3.5rem;
+  }
+}
+
+/*media queries--------------*/
