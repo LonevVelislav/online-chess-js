@@ -289,19 +289,18 @@ router.patch("/move/:id", protect, restrictToPlayers, async (req, res) => {
     try {
         let filteredObject = {};
         Object.keys(req.body).forEach((el) => {
-            if (el !== "board" && el !== "turn") {
+            if (el !== "board") {
                 throw new Error(
                     "invalid data, can only change board positions!"
                 );
             }
-            filteredObject[el] = req.body[el];
+            filteredObject[el] = req.body.board;
         });
 
         const game = await Game.findByIdAndUpdate(
             req.params.id,
             {
                 board: filteredObject.board,
-                turn: filteredObject.turn,
             },
             {
                 new: true,

@@ -165,7 +165,7 @@ export const game = (
             }
         }
 
-        function dropClickedHandler(e) {
+        async function dropClickedHandler(e) {
             if (e.target.tagName === "DIV" && clickedImage.tagName === "IMG") {
                 const dropedR = Number(e.target.style.gridRowStart) - 1;
                 const dropedC = Number(e.target.style.gridColumnStart) - 1;
@@ -225,7 +225,7 @@ export const game = (
                     board[dropedR][dropedC] === dragging.peace &&
                     (dragging.r !== dropedR || dragging.c !== dropedC);
                 if (moved) {
-                    movePeaceHandler(board);
+                    await movePeaceHandler(board);
                 }
             }
         }

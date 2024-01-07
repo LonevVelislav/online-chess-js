@@ -1,28 +1,69 @@
-import { useReducer, useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { game } from "../../chess-scrypt/chess.js";
 
+import io from "socket.io-client";
+
+const socket = io.connect("http://192.168.103:3010");
+
 import AuthContext from "../../contexts/AuthContext";
-import boardReducer from "./boardReducer.js";
-import turnReducer from "./turnReducer.js";
 
 export default function Board() {
-    const { userId } = useContext(AuthContext);
     const navigate = useNavigate();
-    const { id } = useParams();
-    const [board, boardDispatch] = useReducer(boardReducer, []);
-    const [turn, turnDispatch] = useReducer(turnReducer, "");
 
+    const { userId } = useContext(AuthContext);
+    const { id } = useParams();
+    const [board, setBoard] = useState([]);
+    const [turn, setTurn] = useState("");
     const [player1, setPlayer1] = useState({});
     const [player2, setPlayer2] = useState({});
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch(`http://192.168.103:3010/for-the-king/games/${id}`)
+            .then((data) => data.json())
+            .then((res) => {
+                if (res.status === "success") {
+                    setLoading(false);
+                    setBoard(res.data.game.board);
+                    setTurn(res.data.game.turn);
+                    setPlayer1(res.data.game.player1);
+                    setPlayer2(res.data.game.player2);
+                }
+                if (res.status === "fail") {
+                    navigate("/404");
+                }
+            })
+            .catch((err) => {
+                navigate("/404");
+            });
+    }, []);
+
+    useEffect(() => {
+        socket.on("recieve_data", (data) => {
+            setBoard(data.result.board);
+            setTurn(data.result.turn);
+
+            game(
+                data.result.board,
+                data.result.turn,
+                player1,
+                player2,
+                movePeaceHandler,
+                userId
+            );
+        });
+    }, [socket]);
+
+    function sendData(data) {
+        socket.emit("send_data", { result: data });
+    }
 
     const movePeaceHandler = async (board) => {
         fetch(`http://192.168.103:3010/for-the-king/games/move/${id}`, {
             method: "PATCH",
             body: JSON.stringify({
                 board: board,
-                turn,
             }),
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -32,17 +73,11 @@ export default function Board() {
             .then((data) => data.json())
             .then((res) => {
                 if (res.status === "success") {
-                    console.log(res.data.game);
-                    boardDispatch({
-                        type: "change-board",
-                        payload: res.data.game.board,
-                    });
-                    turnDispatch({
-                        type: "change-turn",
-                        payload: res.data.game.turn,
+                    sendData({
+                        board: res.data.game.board,
+                        turn: res.data.game.turn,
                     });
                 }
-                navigate(`/board/${id}`);
                 if (res.status === "fail") {
                     navigate("/404");
                 }
@@ -50,34 +85,9 @@ export default function Board() {
             .catch((err) => navigate("/404"));
     };
 
-    useEffect(() => {
-        fetch(`http://192.168.103:3010/for-the-king/games/${id}`)
-            .then((data) => data.json())
-            .then((res) => {
-                if (res.status === "success") {
-                    setLoading(false);
-                    boardDispatch({
-                        type: "get-board",
-                        payload: res.data.game.board,
-                    });
-                    turnDispatch({
-                        type: "get-turn",
-                        payload: res.data.game.turn,
-                    });
-                    setPlayer1(res.data.game.player1);
-                    setPlayer2(res.data.game.player2);
-                }
-                if (res.status === "fail") {
-                    navigate("/404");
-                }
-            })
-            .catch((err) => console.log(err));
-    }, []);
     if (!loading) {
-        console.log("redenr");
         game(board, turn, player1, player2, movePeaceHandler, userId);
     }
-
     return (
         <>
             <span className="board-player2">{player2 && player2.username}</span>

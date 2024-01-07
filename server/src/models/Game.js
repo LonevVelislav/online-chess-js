@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const server = require("../index.js");
 
 const gameSchema = new mongoose.Schema({
     board: [[{ type: Object }]],
@@ -19,7 +20,6 @@ gameSchema.pre("save", async function (next) {
     if (this.isNew) {
         this.turn = "white";
     } else {
-        console.log("update turn");
         this.turn = this.turn === "white" ? "black" : "white";
     }
 
