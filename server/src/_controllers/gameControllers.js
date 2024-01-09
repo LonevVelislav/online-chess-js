@@ -2,11 +2,15 @@ const router = require("express").Router();
 const Game = require("../models/Game");
 const User = require("../models/User");
 
-const { protect, restrictToPlayers } = require("../middlewares/authMiddleware");
+const {
+    protect,
+    restrictToPlayers,
+    restrctToHost,
+} = require("../middlewares/authMiddleware");
 const castError = require("../utils/castError");
 
 router.get("/", async (req, res) => {
-    const games = await Game.find().populate("player1", "username");
+    const games = await Game.find().populate("player1").populate("player2");
 
     try {
         res.status(200).json({
@@ -216,6 +220,7 @@ router.post("/", protect, async (req, res) => {
                 ],
             ],
             player1: req.user._id,
+            host: req.user._id,
         });
         await User.findByIdAndUpdate(
             req.user._id,
@@ -306,7 +311,9 @@ router.patch("/move/:id", protect, restrictToPlayers, async (req, res) => {
                 new: true,
                 runValidators: true,
             }
-        );
+        )
+            .populate("player1")
+            .populate("player2");
         if (!game) {
             throw new Error("game does not exist!");
         }
@@ -317,6 +324,31 @@ router.patch("/move/:id", protect, restrictToPlayers, async (req, res) => {
             data: {
                 game,
             },
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: castError(err),
+        });
+    }
+});
+
+router.delete("/:id", protect, restrctToHost, async (req, res) => {
+    try {
+        const game = await Game.findById(req.params.id);
+        const player1 = await User.findById(game.player1);
+        const player2 = await User.findById(game.player2);
+        player1.playing = false;
+        await player1.save();
+        if (player2) {
+            player2.playing = false;
+            await player2.save();
+        }
+        await Game.findByIdAndDelete(req.params.id);
+
+        res.status(204).json({
+            status: "success",
+            data: null,
         });
     } catch (err) {
         res.status(400).json({

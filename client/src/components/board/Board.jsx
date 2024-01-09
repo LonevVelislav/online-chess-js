@@ -13,42 +13,42 @@ export default function Board() {
 
     const { userId } = useContext(AuthContext);
     const { id } = useParams();
-    const [board, setBoard] = useState([]);
-    const [turn, setTurn] = useState("");
-    const [player1, setPlayer1] = useState({});
-    const [player2, setPlayer2] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [player1, setPlayer1] = useState("");
+    const [player2, setPlayer2] = useState("");
 
     useEffect(() => {
         fetch(`http://192.168.103:3010/for-the-king/games/${id}`)
             .then((data) => data.json())
             .then((res) => {
                 if (res.status === "success") {
-                    setLoading(false);
-                    setBoard(res.data.game.board);
-                    setTurn(res.data.game.turn);
                     setPlayer1(res.data.game.player1);
                     setPlayer2(res.data.game.player2);
+                    game(
+                        res.data.game.board,
+                        res.data.game.turn,
+                        res.data.game.player1,
+                        res.data.game.player2,
+                        movePeaceHandler,
+                        userId
+                    );
                 }
                 if (res.status === "fail") {
                     navigate("/404");
                 }
             })
             .catch((err) => {
+                console.log(err);
                 navigate("/404");
             });
     }, []);
 
     useEffect(() => {
         socket.on("recieve_data", (data) => {
-            setBoard(data.result.board);
-            setTurn(data.result.turn);
-
             game(
                 data.result.board,
                 data.result.turn,
-                player1,
-                player2,
+                data.result.player1,
+                data.result.player2,
                 movePeaceHandler,
                 userId
             );
@@ -76,6 +76,8 @@ export default function Board() {
                     sendData({
                         board: res.data.game.board,
                         turn: res.data.game.turn,
+                        player1: res.data.game.player1,
+                        player2: res.data.game.player2,
                     });
                 }
                 if (res.status === "fail") {
@@ -85,11 +87,11 @@ export default function Board() {
             .catch((err) => navigate("/404"));
     };
 
-    if (!loading) {
-        game(board, turn, player1, player2, movePeaceHandler, userId);
-    }
     return (
         <>
+            <Link className="home-btn" to={"/"}>
+                &larr; home
+            </Link>
             <span className="board-player2">{player2 && player2.username}</span>
             <div className="board"></div>
             <span className="board-player1">{player1 && player1.username}</span>

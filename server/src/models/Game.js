@@ -14,6 +14,10 @@ const gameSchema = new mongoose.Schema({
     turn: {
         type: String,
     },
+    host: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+    },
 });
 
 gameSchema.pre("save", async function (next) {

@@ -19,6 +19,8 @@ export const game = (
     };
     let colorTurn = turn;
 
+    console.log(colorTurn);
+
     function renderBoard(board) {
         let dragging = {};
         let clickedImage = {};
@@ -26,7 +28,7 @@ export const game = (
         const boardDomElement = document.querySelector(".board");
         boardDomElement.innerHTML = "";
 
-        const black = "#404255";
+        const black = "#666877";
         const white = "#fdf0d5";
 
         function drawSquares(x, y, color, id) {

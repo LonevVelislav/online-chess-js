@@ -5,6 +5,8 @@ import Home from "./components/home/Home";
 import Board from "./components/board/Board";
 import Login from "./components/login/Login";
 import Register from "./components/register/Resiter";
+import Logout from "./components/logout/Logout";
+import Delete from "./components/delete/Delete";
 
 import { AuthProveder } from "./contexts/AuthContext";
 
@@ -17,6 +19,8 @@ function App() {
                 <Route path="/board/:id" element={<Board />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route path="/delete/:id" element={<Delete />} />
             </Routes>
         </AuthProveder>
     );

@@ -60,3 +60,21 @@ exports.restrictToPlayers = async (req, res, next) => {
         });
     }
 };
+
+exports.restrctToHost = async (req, res, next) => {
+    try {
+        const game = await Game.findById(req.params.id);
+        if (!game) {
+            throw new Error("game does not exist!");
+        }
+        if (req.user._id.toString() !== game.host.toString()) {
+            throw new Error("Your are not the host of the game!");
+        }
+        next();
+    } catch (err) {
+        res.status(403).json({
+            status: "fail",
+            message: castError(err),
+        });
+    }
+};

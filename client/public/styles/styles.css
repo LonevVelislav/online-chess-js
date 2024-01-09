@@ -27,12 +27,15 @@ body {
 
 .btn {
   padding: 0.8rem;
-  background-color: #fdf0d5;
   color: #404255;
-  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 a {
   text-decoration: none;
+  padding: 0.8rem;
+  color: #404255;
+  transition: all 0.2s;
 }
 
 input:focus,
@@ -60,9 +63,43 @@ button:focus {
 .home-player-stats div {
   margin-bottom: 10rem;
 }
-.home-games-list {
-}
 
+.home-games-list {
+  margin-left: 3rem;
+  list-style-type: none;
+  color: #fdf0d5;
+  font-size: 2rem;
+}
+.game-list-item {
+  display: flex;
+  background-color: #404255;
+  align-items: center;
+  padding: 1.2rem;
+}
+.game-list-item div {
+  margin-right: 1.2rem;
+}
+.btn-delete {
+  background-color: #e63946;
+  font-size: 1.2rem;
+}
+.btn-connect {
+  background-color: #99d98c;
+}
+.btn-connect:hover,
+.btn-connect:active {
+  background-color: #c2e8ba;
+}
+.home-btn {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 1.2rem;
+  position: fixed;
+  bottom: 50%;
+  left: 0;
+  background: #99d98c;
+}
 /* home --------*/
 
 /*login/register-----------*/
@@ -133,38 +170,6 @@ button:focus {
 }
 
 /*error-message--------*/
-
-/*game-card--------*/
-.game-card {
-  position: relative;
-  margin-left: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 15rem;
-}
-.game-card button {
-  position: absolute;
-  margin: 1.2rem;
-}
-.game-card h6 {
-  position: absolute;
-  color: #fdf0d5;
-  top: 0;
-}
-.game-card img {
-  width: 100%;
-  border-radius: 50%;
-}
-.game-card span {
-  position: absolute;
-  color: #a7c957;
-  text-transform: uppercase;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-/*game-card--------*/
 
 /*media queries--------------*/
 

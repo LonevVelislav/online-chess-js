@@ -25,6 +25,7 @@ export const AuthProveder = ({ children }) => {
                         _id: res.data.user._id,
                         username: res.data.user.username,
                         playing: res.data.user.playing,
+                        inGame: res.data.user.inGame,
                         token: res.token,
                     });
                     localStorage.setItem("token", res.token);
@@ -41,7 +42,6 @@ export const AuthProveder = ({ children }) => {
     };
 
     const loginHandler = async (values) => {
-        console.log(values);
         fetch("http://192.168.103:3010/for-the-king/users/login", {
             method: "POST",
             body: JSON.stringify(values),
@@ -71,7 +71,13 @@ export const AuthProveder = ({ children }) => {
             .catch((err) => navigate("/404"));
     };
 
+    const logoutHandler = () => {
+        setAuth({});
+        localStorage.removeItem("token");
+    };
+
     const values = {
+        logoutHandler,
         registerHandler,
         loginHandler,
         errorMessage,
@@ -79,6 +85,7 @@ export const AuthProveder = ({ children }) => {
         userId: auth._id,
         isAuth: !!auth.token,
         isPlaying: auth.playing,
+        inGame: auth.inGame,
     };
 
     return (
