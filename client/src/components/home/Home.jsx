@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, createContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import AuthContext from "../../contexts/AuthContext";
@@ -8,8 +8,7 @@ import Login from "../login/Login";
 
 export default function Home() {
     const navigate = useNavigate();
-    const { username, isAuth, isPlaying, userId, inGame } =
-        useContext(AuthContext);
+    const { username, isAuth, isPlaying, userId } = useContext(AuthContext);
     const [games, setGames] = useState([]);
 
     useEffect(() => {
@@ -65,7 +64,7 @@ export default function Home() {
                         <ul className="home-games-list">
                             {games.map((el) => {
                                 const canJoin =
-                                    el.player1._id !== userId &&
+                                    el.host !== userId &&
                                     el.player2 === undefined &&
                                     isPlaying === false;
 

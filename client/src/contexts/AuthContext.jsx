@@ -76,7 +76,59 @@ export const AuthProveder = ({ children }) => {
         localStorage.removeItem("token");
     };
 
+    const joinGameHandler = async (id) => {
+        fetch(`http://192.168.103:3010/for-the-king/games/join/${id}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((data) => data.json())
+            .then((res) => {
+                if (res.status === "success") {
+                    setAuth((state) => {
+                        return {
+                            ...state,
+                            playing: true,
+                        };
+                    });
+                    navigate(`/board/${id}`);
+                }
+                if (res.status === "fail") {
+                    navigate("/404");
+                }
+            })
+            .catch((err) => navigate("/404"));
+    };
+
+    const leaveGameHandler = () => {
+        setAuth((state) => {
+            return { ...state, playing: false };
+        });
+        navigate("/");
+    };
+
+    const deleteGameHandler = (id) => {
+        fetch(`http://192.168.103:3010/for-the-king/games/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return navigate("/");
+                }
+            })
+            .catch((err) => {
+                return navigate("/404");
+            });
+    };
+
     const values = {
+        leaveGameHandler,
+        joinGameHandler,
+        deleteGameHandler,
         logoutHandler,
         registerHandler,
         loginHandler,

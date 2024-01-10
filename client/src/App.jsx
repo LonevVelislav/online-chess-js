@@ -7,8 +7,10 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Resiter";
 import Logout from "./components/logout/Logout";
 import Delete from "./components/delete/Delete";
+import JoinGame from "./components/join-game/JoinGame";
 
 import { AuthProveder } from "./contexts/AuthContext";
+import LeaveGame from "./components/leave-game/LeaveGame";
 
 function App() {
     return (
@@ -21,6 +23,8 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/delete/:id" element={<Delete />} />
+                <Route path="/join/:id" element={<JoinGame />} />
+                <Route path="/leave" element={<LeaveGame />} />
             </Routes>
         </AuthProveder>
     );

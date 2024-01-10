@@ -79,6 +79,11 @@ button:focus {
 .game-list-item div {
   margin-right: 1.2rem;
 }
+
+.btn-create {
+  background-color: #99d98c;
+}
+
 .btn-delete {
   background-color: #e63946;
   font-size: 1.2rem;
@@ -166,7 +171,9 @@ button:focus {
 
 .error-message {
   background-color: red;
+  color: #fdf0d5;
   padding: 0.8rem;
+  font-size: 2rem;
 }
 
 /*error-message--------*/
@@ -179,6 +186,10 @@ button:focus {
   }
   .peace {
     width: 3.5rem;
+  }
+  .home-btn {
+    bottom: 0;
+    left: 0;
   }
 }
 

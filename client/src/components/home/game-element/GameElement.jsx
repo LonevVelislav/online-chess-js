@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Link, redirect } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function GameElement({
     gameId,
@@ -10,26 +8,6 @@ export default function GameElement({
     myGame,
     host,
 }) {
-    const navigate = useNavigate();
-    const joinGameHandler = async () => {
-        fetch(`http://192.168.103:3010/for-the-king/games/join/${gameId}`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-        })
-            .then((data) => data.json())
-            .then((res) => {
-                if (res.status === "success") {
-                    navigate(`/board/${gameId}`);
-                }
-                if (res.status === "fail") {
-                    navigate("/404");
-                }
-            })
-            .catch((err) => navigate("/404"));
-    };
-
     return (
         <li className="game-list-item">
             <div>
@@ -44,9 +22,9 @@ export default function GameElement({
             )}
 
             {canJoin && (
-                <button className="btn btn-connect" onClick={joinGameHandler}>
+                <Link className="btn btn-connect" to={`/join/${gameId}`}>
                     join
-                </button>
+                </Link>
             )}
             {host && (
                 <Link className="btn-delete" to={`/delete/${gameId}`}>

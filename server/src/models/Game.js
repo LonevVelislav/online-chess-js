@@ -23,8 +23,6 @@ const gameSchema = new mongoose.Schema({
 gameSchema.pre("save", async function (next) {
     if (this.isNew) {
         this.turn = "white";
-    } else {
-        this.turn = this.turn === "white" ? "black" : "white";
     }
 
     next();

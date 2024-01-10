@@ -21,8 +21,12 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`user connected: ${socket.id}`);
 
-    socket.on("send_data", (data) => {
-        socket.broadcast.emit("recieve_data", data);
+    socket.on("join_room", (data) => {
+        socket.join(data);
+    });
+
+    socket.on("send_game", (data) => {
+        socket.to(data.room).emit("recieve_game", data);
     });
 });
 
