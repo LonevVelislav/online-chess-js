@@ -76,6 +76,35 @@ export const AuthProveder = ({ children }) => {
         localStorage.removeItem("token");
     };
 
+    const createGameHandler = async () => {
+        fetch("http://192.168.103:3010/for-the-king/games", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "content-type": "application/json",
+            },
+        })
+            .then((data) => data.json())
+            .then((res) => {
+                if (res.status === "success") {
+                    setAuth((state) => {
+                        return {
+                            ...state,
+                            playing: true,
+                        };
+                    });
+                    navigate(`/board/${res.data.newGame._id}`);
+                }
+                if (res.status === "fail") {
+                    navigate(`/`);
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+                return navigate("/404");
+            });
+    };
+
     const joinGameHandler = async (id) => {
         fetch(`http://192.168.103:3010/for-the-king/games/join/${id}`, {
             method: "POST",
@@ -101,6 +130,31 @@ export const AuthProveder = ({ children }) => {
             .catch((err) => navigate("/404"));
     };
 
+    const disconnectGameHandler = async (id) => {
+        fetch(`http://192.168.103:3010/for-the-king/games/disconnect/${id}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((data) => data.json())
+            .then((res) => {
+                if (res.status === "success") {
+                    setAuth((state) => {
+                        return {
+                            ...state,
+                            playing: false,
+                        };
+                    });
+                    navigate(`/`);
+                }
+                if (res.status === "fail") {
+                    navigate("/404");
+                }
+            })
+            .catch((err) => navigate("/404"));
+    };
+
     const leaveGameHandler = () => {
         setAuth((state) => {
             return { ...state, playing: false };
@@ -117,7 +171,10 @@ export const AuthProveder = ({ children }) => {
         })
             .then((res) => {
                 if (res.ok) {
-                    return navigate("/");
+                    setAuth((state) => {
+                        return { ...state, playing: false };
+                    });
+                    navigate("/");
                 }
             })
             .catch((err) => {
@@ -126,6 +183,8 @@ export const AuthProveder = ({ children }) => {
     };
 
     const values = {
+        createGameHandler,
+        disconnectGameHandler,
         leaveGameHandler,
         joinGameHandler,
         deleteGameHandler,

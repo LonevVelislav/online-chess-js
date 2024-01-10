@@ -20,26 +20,6 @@ export default function Home() {
             .catch((err) => navigate("/404"));
     }, [userId]);
 
-    const createGameHandler = async () => {
-        fetch("http://192.168.103:3010/for-the-king/games", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "content-type": "application/json",
-            },
-        })
-            .then((data) => data.json())
-            .then((res) => {
-                if (res.status === "success") {
-                    navigate(`/board/${res.data.newGame._id}`);
-                }
-            })
-            .catch((err) => {
-                console.log(err.message);
-                return navigate("/404");
-            });
-    };
-
     return (
         <>
             {isAuth && (
@@ -49,9 +29,9 @@ export default function Home() {
                             <span>{username}</span>
                         </div>
                         <div>
-                            <button className="btn" onClick={createGameHandler}>
+                            <Link className="btn" to="/create">
                                 Create Game
-                            </button>
+                            </Link>
                         </div>
                         <div>
                             <span>Friends</span>
@@ -74,6 +54,10 @@ export default function Home() {
 
                                 const host = el.player1._id === userId;
 
+                                const secondPlayer =
+                                    el.player1._id !== userId &&
+                                    el.player2?._id === userId;
+
                                 if (myGame || canJoin) {
                                     return (
                                         <GameElement
@@ -84,6 +68,7 @@ export default function Home() {
                                             canJoin={canJoin}
                                             myGame={myGame}
                                             host={host}
+                                            secondPlayer={secondPlayer}
                                         />
                                     );
                                 }

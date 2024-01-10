@@ -162,8 +162,10 @@ export default function Board() {
                     e.target.dataset.type === colorTurn &&
                     players[colorTurn]._id === userId
                 ) {
+                    let targetWidth = e.target.width;
                     boardDomElement.style.cursor = "none";
                     clickedImage = image;
+                    image.style.width = targetWidth + "px";
                     image.style.position = "absolute";
                     document
                         .querySelectorAll(".peace")

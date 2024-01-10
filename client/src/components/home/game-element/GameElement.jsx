@@ -7,6 +7,7 @@ export default function GameElement({
     canJoin,
     myGame,
     host,
+    secondPlayer,
 }) {
     return (
         <li className="game-list-item">
@@ -22,14 +23,25 @@ export default function GameElement({
             )}
 
             {canJoin && (
-                <Link className="btn btn-connect" to={`/join/${gameId}`}>
-                    join
-                </Link>
+                <div>
+                    <Link className="btn btn-connect" to={`/join/${gameId}`}>
+                        join
+                    </Link>
+                </div>
             )}
             {host && (
-                <Link className="btn-delete" to={`/delete/${gameId}`}>
-                    delete
-                </Link>
+                <div>
+                    <Link className="btn-delete" to={`/delete/${gameId}`}>
+                        delete
+                    </Link>
+                </div>
+            )}
+            {secondPlayer && (
+                <div>
+                    <Link className="btn-delete" to={`/disconnect/${gameId}`}>
+                        disconnect
+                    </Link>
+                </div>
             )}
         </li>
     );

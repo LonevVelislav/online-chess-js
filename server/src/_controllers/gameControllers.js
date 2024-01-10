@@ -290,6 +290,37 @@ router.post("/join/:id", protect, async (req, res) => {
     }
 });
 
+router.post("/disconnect/:id", protect, async (req, res) => {
+    try {
+        const game = await Game.findById(req.params.id);
+        if (!game) {
+            throw new Error("game does no longer exist!");
+        }
+        game.player2 = undefined;
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                playing: false,
+            },
+            { runValidators: true, new: true }
+        );
+
+        await game.save();
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                game,
+            },
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: castError(err),
+        });
+    }
+});
+
 router.patch("/move/:id", protect, restrictToPlayers, async (req, res) => {
     try {
         let filteredObject = {};
