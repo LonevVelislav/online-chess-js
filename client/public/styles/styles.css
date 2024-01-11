@@ -8,7 +8,7 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  border-radius: 5px;
+  border-radius: 1px;
 }
 body {
   font-family: "Aleo", serif;
@@ -47,42 +47,106 @@ button:focus {
 /* general --------- */
 /* home --------*/
 .home-page {
-  font-size: 2.4rem;
+  height: 100vh;
+  width: 100vw;
+  font-size: 1.6rem;
   display: grid;
-  grid-template-columns: 50fr 50fr;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   align-items: center;
+  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.03);
 }
+
 .home-player-stats {
   display: flex;
-  flex-direction: column;
-  background-color: #fdf0d5;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  background-color: #fdf0d5;
   padding: 3.2rem;
+  grid-column: 1 / span 5;
+  grid-row: 1;
 }
-.home-player-stats div {
-  margin-bottom: 10rem;
+.home-player-stats span {
+  color: #404255;
+}
+
+.home-games-list-container {
+  grid-column: 1 / span 2;
+  grid-row: 2 / span 5;
+  width: 100%;
+  height: 100%;
 }
 
 .home-games-list {
-  margin-left: 3rem;
   list-style-type: none;
   color: #fdf0d5;
-  font-size: 2rem;
 }
-.game-list-item {
+.home-chat-room {
   display: flex;
+  flex-direction: column;
   background-color: #404255;
-  align-items: center;
-  padding: 1.2rem;
-  margin-bottom: 0.8rem;
+  grid-column: 3 / span 3;
+  grid-row: 2 / span 5;
+  height: 100%;
 }
-.game-list-item div {
-  margin-right: 1.2rem;
+.home-chat-room form {
+  display: flex;
 }
 
-.btn-create {
-  background-color: #99d98c;
+.chat-room-input {
+  width: 100%;
+  height: 100%;
+  font-size: 1.6rem;
+  background-color: #fdf0d5;
+  padding: 0.8rem;
+  color: #404255;
+  margin-bottom: 1.2rem;
+}
+.home-chat-room ul {
+  list-style: none;
+  font-size: 1.6rem;
+}
+
+.chat-list-item {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  animation: hide 1s linear 2s;
+  animation-delay: 10s;
+  -webkit-animation-delay: 10s;
+}
+
+@keyframes hide {
+  to {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.chat-list-item div {
+  display: flex;
+  align-items: center;
+}
+.chat-list-item span {
+  margin-right: 1.2rem;
+  color: #99d98c;
+  font-weight: 700;
+}
+.chat-list-item p {
+  color: #fdf0d5;
+}
+.game-list-item {
+  background-color: #fdf0d5;
+  color: #404255;
+  display: flex;
+  align-items: center;
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  margin-right: 0.6rem;
+  margin-bottom: 0.2rem;
+}
+.game-list-item div {
+  margin-right: 0.8rem;
 }
 
 .btn-delete {
@@ -90,7 +154,8 @@ button:focus {
   font-size: 1.2rem;
 }
 .btn-connect {
-  background-color: #99d98c;
+  background-color: #404255;
+  color: #fdf0d5;
 }
 .btn-connect:hover,
 .btn-connect:active {
@@ -121,6 +186,7 @@ button:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 0.8rem;
 }
 .login-form label {
   margin-right: 0.8rem;
@@ -183,20 +249,11 @@ button:focus {
 
 /*media queries--------------*/
 
-@media (max-width: 34em) {
+@media (max-width: 70em) {
   html {
-    font-size: 45%;
+    font-size: 47%;
   }
-  .home-btn {
-    bottom: 0;
-    left: 0;
-  }
-}
 
-@media (max-width: 42em) {
-  html {
-    font-size: 45%;
-  }
   .home-btn {
     bottom: 0;
     left: 0;

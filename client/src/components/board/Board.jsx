@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+import AuthContext from "../../contexts/AuthContext";
 
 //peace movements
 import {
@@ -30,11 +32,7 @@ import {
 
 //-----------
 
-import io from "socket.io-client";
-
 const socket = io.connect("http://192.168.103:3010");
-
-import AuthContext from "../../contexts/AuthContext";
 
 export default function Board() {
     const navigate = useNavigate();
