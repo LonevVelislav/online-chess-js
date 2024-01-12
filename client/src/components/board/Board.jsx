@@ -138,6 +138,11 @@ export default function Board() {
             const image = document.createElement("img");
             image.className = "peace";
             image.style.zIndex = "1";
+            if (userId === player2?._id) {
+                image.style.rotate = "180deg";
+                image.style.transform = "translate(-50%)";
+            }
+
             image.src = url;
             image.id = id;
             if (turn !== undefined) {
@@ -145,34 +150,19 @@ export default function Board() {
             }
             image.dataset.type = type;
 
-            let offsetX, offsetY;
-
-            function drag(e) {
-                if (dragging) {
-                    image.style.left = e.clientX - offsetX + "px";
-                    image.style.top = e.clientY - offsetY + "px";
-                }
-            }
-
             image.addEventListener("click", function (e) {
                 if (
                     e.target.tagName === "IMG" &&
                     e.target.dataset.type === colorTurn &&
                     players[colorTurn]._id === userId
                 ) {
-                    let targetWidth = e.target.width;
-                    boardDomElement.style.cursor = "none";
+                    boardDomElement.style.cursor = "crosshair";
                     clickedImage = image;
-                    image.style.width = targetWidth + "px";
-                    image.style.position = "absolute";
                     document
                         .querySelectorAll(".peace")
                         .forEach(
                             (peace) => (peace.style.pointerEvents = "none")
                         );
-
-                    offsetX = e.clientX - image.getBoundingClientRect().left;
-                    offsetY = e.clientY - image.getBoundingClientRect().top;
 
                     let r =
                         Number(e.target.parentElement.style.gridRowStart) - 1;
@@ -216,8 +206,6 @@ export default function Board() {
                     }
                 }
             });
-
-            boardDomElement.addEventListener("mousemove", drag);
 
             document.querySelectorAll(".square").forEach((square) => {
                 if (
@@ -303,8 +291,6 @@ export default function Board() {
                     onKingDrop(e, board, dragging);
                 }
 
-                clickedImage.style.position = "static";
-
                 document
                     .querySelectorAll(".peace")
                     .forEach((peace) => (peace.style.pointerEvents = "all"));
@@ -344,7 +330,10 @@ export default function Board() {
                 &larr; home
             </Link>
             <span className="board-player2">{player2 && player2.username}</span>
-            <div className="board"></div>
+            <div
+                className="board"
+                style={{ rotate: userId === player2?._id ? "180deg" : "" }}
+            ></div>
             <span className="board-player1">{player1 && player1.username}</span>
         </>
     );
