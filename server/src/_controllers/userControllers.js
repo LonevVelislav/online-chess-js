@@ -47,7 +47,7 @@ router.patch("/updateUser", protect, uploadPhoto(), async (req, res) => {
             throw new Error("cant change password!");
         }
         const updatedObj = {};
-        console.log(req.file, req.body);
+        console.log(req.body);
         if (req.file) {
             updatedObj.imagefile = req.file;
             updatedObj.image = req.file.originalname;

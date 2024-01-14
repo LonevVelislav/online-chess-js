@@ -72,17 +72,20 @@ button:focus {
 }
 .home-player-stats span {
   color: #404255;
+  margin-left: 0.8rem;
 }
 .avatar {
   border: 2px solid #404255;
   border-radius: 50%;
   width: 5rem;
-  margin-right: 0.8rem;
 }
 .avatar-account {
   border: 2px solid #404255;
   border-radius: 50%;
   width: 10rem;
+}
+.avatar-game {
+  width: 7rem;
 }
 #image {
   font-size: 1.6rem;
@@ -239,18 +242,33 @@ button:focus {
 }
 
 .board-player1 {
-  font-size: 1.2rem;
-  color: white;
-  position: absolute;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  padding: 1.2rem;
+  border-radius: 5px;
+  position: fixed;
   top: 0;
   left: 0;
 }
+.board-player1 span {
+  margin: 0.8rem;
+  color: #fdf0d5;
+}
 .board-player2 {
-  font-size: 1.2rem;
-  color: white;
-  position: absolute;
-  top: 95%;
-  left: 95%;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  padding: 1.2rem;
+  border-radius: 5px;
+  position: fixed;
+  top: 90%;
+  right: 0;
+}
+
+.board-player2 span {
+  margin: 0.8rem;
+  color: #fdf0d5;
 }
 
 /* board ----------*/

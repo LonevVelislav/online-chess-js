@@ -84,7 +84,6 @@ export const AuthProveder = ({ children }) => {
             .then((data) => data.json())
             .then((res) => {
                 if (res.status === "success") {
-                    console.log(res);
                     setAuth((state) => {
                         return {
                             ...state,

@@ -40,8 +40,8 @@ export default function Board() {
     const { userId } = useContext(AuthContext);
     const { id } = useParams();
 
-    const [player1, setPlayer1] = useState("");
-    const [player2, setPlayer2] = useState("");
+    const [player1, setPlayer1] = useState({});
+    const [player2, setPlayer2] = useState({});
     const [boardState, setBoardState] = useState([]);
     const [turnState, setTurnState] = useState("");
     const [loading, setLoading] = useState(true);
@@ -329,12 +329,37 @@ export default function Board() {
             <Link className="home-btn" to="/">
                 &larr; home
             </Link>
-            <span className="board-player2">{player2 && player2.username}</span>
+
+            <div
+                className={
+                    player1._id === userId ? "board-player2" : "board-player1"
+                }
+            >
+                <img
+                    className="avatar avatar-game "
+                    src={`http://192.168.0.103:3010/photos/${player1._id}/${player1.image}`}
+                    alt={player1.image}
+                />
+                <span>{player1.username}</span>
+            </div>
+
             <div
                 className="board"
                 style={{ rotate: userId === player2?._id ? "180deg" : "" }}
             ></div>
-            <span className="board-player1">{player1 && player1.username}</span>
+
+            <div
+                className={
+                    player1._id === userId ? "board-player1" : "board-player2"
+                }
+            >
+                <span>{player2?.username}</span>
+                <img
+                    className="avatar avatar-game"
+                    src={`http://192.168.0.103:3010/photos/${player2?._id}/${player2?.image}`}
+                    alt={player2?.image}
+                />
+            </div>
         </>
     );
 }

@@ -19,12 +19,8 @@ export default function AccountPage() {
         const imageFile = document.getElementById("image").files.length > 0;
         if (imageFile) {
             formData.append("image", document.getElementById("image").files[0]);
-            formData.append(
-                "username",
-                document.getElementById("username").value
-            );
         }
-        console.log(formData);
+        formData.append("username", document.getElementById("username").value);
         await editAccountHandler(formData);
     };
 
