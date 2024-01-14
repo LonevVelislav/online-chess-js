@@ -11,7 +11,8 @@ import Login from "../login/Login";
 const socket = io.connect("http://192.168.103:3010");
 export default function Home() {
     const navigate = useNavigate();
-    const { username, isAuth, isPlaying, userId } = useContext(AuthContext);
+    const { username, isAuth, isPlaying, userId, image } =
+        useContext(AuthContext);
     const [games, setGames] = useState([]);
     const [message, setMessage] = useState("");
     const [messageElement, setMessageElement] = useState({});
@@ -77,7 +78,14 @@ export default function Home() {
                 <>
                     <main className="home-page">
                         <div className="home-player-stats">
-                            <span>{username}</span>
+                            <Link className="account-link" to="/account">
+                                <img
+                                    className="avatar"
+                                    src={`http://192.168.0.103:3010/photos/${userId}/${image}`}
+                                    alt={image}
+                                />
+                                <span>{username}</span>
+                            </Link>
 
                             <Link className="btn btn-connect" to="/create">
                                 Host

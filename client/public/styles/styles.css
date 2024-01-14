@@ -66,8 +66,26 @@ button:focus {
   grid-column: 1 / span 5;
   grid-row: 1;
 }
+.account-link {
+  display: flex;
+  align-items: center;
+}
 .home-player-stats span {
   color: #404255;
+}
+.avatar {
+  border: 2px solid #404255;
+  border-radius: 50%;
+  width: 5rem;
+  margin-right: 0.8rem;
+}
+.avatar-account {
+  border: 2px solid #404255;
+  border-radius: 50%;
+  width: 10rem;
+}
+#image {
+  font-size: 1.6rem;
 }
 
 .home-games-list-container {
@@ -160,6 +178,7 @@ button:focus {
 .btn-connect:hover,
 .btn-connect:active {
   background-color: #c2e8ba;
+  color: #404255;
 }
 .home-btn {
   text-transform: uppercase;
@@ -214,7 +233,7 @@ button:focus {
   width: 50%;
   height: auto;
   display: block;
-  transform: translateX(44%);
+  transform: translateX(50%);
   object-fit: cover;
   cursor: pointer;
 }

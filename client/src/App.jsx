@@ -10,9 +10,10 @@ import Delete from "./components/delete/Delete";
 import JoinGame from "./components/join-game/JoinGame";
 import Disconnect from "./components/disconnect-game/Disconnect";
 import CreateGame from "./components/create-game/CreateGame";
+import AccountPage from "./components/account-page/AccountPage";
+import LeaveGame from "./components/leave-game/LeaveGame";
 
 import { AuthProveder } from "./contexts/AuthContext";
-import LeaveGame from "./components/leave-game/LeaveGame";
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/join/:id" element={<JoinGame />} />
                 <Route path="/leave" element={<LeaveGame />} />
                 <Route path="/disconnect/:id" element={<Disconnect />} />
+                <Route path="/account" element={<AccountPage />} />
             </Routes>
         </AuthProveder>
     );

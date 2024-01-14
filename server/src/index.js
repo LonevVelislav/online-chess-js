@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 const http = require("http");
+const path = require("path");
 const { Server } = require("socket.io");
 
 app.use(cors());
@@ -36,6 +37,7 @@ io.on("connection", (socket) => {
 
 //config
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 mongoose
     .connect(

@@ -26,6 +26,7 @@ export const AuthProveder = ({ children }) => {
                         username: res.data.user.username,
                         playing: res.data.user.playing,
                         inGame: res.data.user.inGame,
+                        image: res.data.user.image,
                         token: res.token,
                     });
                     localStorage.setItem("token", res.token);
@@ -56,6 +57,7 @@ export const AuthProveder = ({ children }) => {
                         _id: res.data.user._id,
                         username: res.data.user.username,
                         playing: res.data.user.playing,
+                        image: res.data.user.image,
                         token: res.token,
                     });
                     localStorage.setItem("token", res.token);
@@ -69,6 +71,41 @@ export const AuthProveder = ({ children }) => {
                 }
             })
             .catch((err) => navigate("/404"));
+    };
+
+    const editAccountHandler = async (values) => {
+        fetch("http://192.168.0.103:3010/for-the-king/users/updateUser", {
+            method: "PATCH",
+            body: values,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((data) => data.json())
+            .then((res) => {
+                if (res.status === "success") {
+                    console.log(res);
+                    setAuth((state) => {
+                        return {
+                            ...state,
+                            image: res.data.user.image,
+                            username: res.data.user.username,
+                        };
+                    });
+                    navigate("/account");
+                }
+                if (res.status === "fail") {
+                    setErrorMessage(res.message);
+                    setTimeout(() => {
+                        setErrorMessage("");
+                    }, 3000);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+
+                navigate("/404");
+            });
     };
 
     const logoutHandler = () => {
@@ -183,6 +220,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const values = {
+        editAccountHandler,
         createGameHandler,
         disconnectGameHandler,
         leaveGameHandler,
@@ -197,6 +235,7 @@ export const AuthProveder = ({ children }) => {
         isAuth: !!auth.token,
         isPlaying: auth.playing,
         inGame: auth.inGame,
+        image: auth.image,
     };
 
     return (

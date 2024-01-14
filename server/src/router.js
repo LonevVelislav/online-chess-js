@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const globalControllers = require("./_controllers/globalConstorllers");
+const globalControllers = require("./_controllers/globalControllers");
 const gameControllers = require("./_controllers/gameControllers");
 const userControllers = require("./_controllers/userControllers");
 
