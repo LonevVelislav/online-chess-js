@@ -56,11 +56,15 @@ export default function Home() {
 
     function createChatElement(data) {
         const div = document.createElement("div");
-        div.className = "chat-list-item ";
+        div.className = "chat-list-item";
+        const imageElement = document.createElement("img");
         const span = document.createElement("span");
         const p = document.createElement("p");
+        imageElement.src = `http://192.168.0.103:3010/photos/${userId}/${image}`;
+        imageElement.className = "avatar";
         span.textContent = `${data.username}:`;
         p.textContent = data.message;
+        div.appendChild(imageElement);
         div.appendChild(span);
         div.appendChild(p);
         setTimeout(() => removeElement(div), 11000);

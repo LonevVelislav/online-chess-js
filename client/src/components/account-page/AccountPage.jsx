@@ -4,7 +4,6 @@ import AuthContext from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function AccountPage() {
-    const navigate = useNavigate();
     const { username, image, userId, errorMessage, editAccountHandler } =
         useContext(AuthContext);
     const [usernameValue, setUsernameValue] = useState(username);
@@ -59,12 +58,12 @@ export default function AccountPage() {
                         main menu &rarr;
                     </Link>
                 </div>
+                {errorMessage && (
+                    <div className="error-message">
+                        <p>{errorMessage + "!"}</p>
+                    </div>
+                )}
             </form>
-            {errorMessage && (
-                <div className="error-message">
-                    <p>{errorMessage + "!"}</p>
-                </div>
-            )}
         </main>
     );
 }
