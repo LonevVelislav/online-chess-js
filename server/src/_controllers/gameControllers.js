@@ -70,7 +70,11 @@ router.post("/", protect, async (req, res) => {
                         url: "/img/peaces/bishop.png",
                         type: "black",
                     },
-                    { id: "queen", url: "/img/peaces/qeen.png", type: "black" },
+                    {
+                        id: "queen",
+                        url: "/img/peaces/queen.png",
+                        type: "black",
+                    },
                     { id: "king", url: "/img/peaces/king.png", type: "black" },
                     {
                         id: "bishop2",

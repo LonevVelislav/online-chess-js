@@ -49,6 +49,7 @@ mongoose
 app.use("/", router);
 app.use("*", (req, res) => {
     res.redirect("/404");
+    cd;
 });
 
 server.listen(process.env.PORT, () =>

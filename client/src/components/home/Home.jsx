@@ -44,6 +44,8 @@ export default function Home() {
         e.preventDefault();
         if (message) {
             let payload = {
+                userId: userId,
+                image: image,
                 username: username,
                 message: message,
             };
@@ -60,7 +62,7 @@ export default function Home() {
         const imageElement = document.createElement("img");
         const span = document.createElement("span");
         const p = document.createElement("p");
-        imageElement.src = `http://192.168.0.103:3010/photos/${userId}/${image}`;
+        imageElement.src = `http://192.168.0.103:3010/photos/${data.userId}/${data.image}`;
         imageElement.className = "avatar";
         span.textContent = `${data.username}:`;
         p.textContent = data.message;

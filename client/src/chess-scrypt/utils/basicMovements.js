@@ -294,3 +294,17 @@ export const pawnDiagonalPositions = (starterR, starterC, board) => {
 
     return diagonals;
 };
+
+export const pawnPromotionPositions = (starterR, starterC, board) => {
+    const color = board[starterR][starterC].type;
+    const promotions = {
+        white: [],
+        black: [],
+    };
+    for (let i = 0; i < board.length; i++) {
+        promotions.white.push([0, i]);
+        promotions.black.push([board.length - 1, board.length - i - 1]);
+    }
+
+    return promotions[color];
+};

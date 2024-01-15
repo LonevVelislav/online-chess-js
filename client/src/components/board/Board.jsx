@@ -305,7 +305,17 @@ export default function Board() {
                 const moved =
                     board[dropedR][dropedC] === dragging.peace &&
                     (dragging.r !== dropedR || dragging.c !== dropedC);
+
+                const promotedPawn =
+                    (dragging.peace.id.includes("pawn") ||
+                        dragging.peace.id.includes("PAWN")) &&
+                    (board[dropedR][dropedC].id === "QUEEN" ||
+                        board[dropedR][dropedC].id === "queen") &&
+                    (dragging.r !== dropedR || dragging.c !== dropedC);
                 if (moved) {
+                    sendData(board, colorTurn);
+                    renderBoard();
+                } else if (promotedPawn) {
                     sendData(board, colorTurn);
                     renderBoard();
                 } else {

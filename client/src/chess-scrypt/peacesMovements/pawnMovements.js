@@ -1,6 +1,7 @@
 import {
     pawnBasicPositions,
     pawnDiagonalPositions,
+    pawnPromotionPositions,
 } from "../utils/basicMovements";
 
 export const onPawnHover = (e, board) => {
@@ -13,6 +14,7 @@ export const onPawnHover = (e, board) => {
 
     let validPositions = pawnBasicPositions(startR, startC, board);
     let diagonals = pawnDiagonalPositions(startR, startC, board);
+    let promotions = pawnPromotionPositions(startR, startC, board);
 
     diagonals.forEach((pos) => {
         if (board[pos[0]][pos[1]]) {
@@ -35,20 +37,23 @@ export const onPawnHover = (e, board) => {
             ) {
                 div.style.boxShadow = "inset 0 0 0 7px #80ed99";
             }
+
+            if (
+                Number(div.style.gridRowStart) === pos[0] + 1 &&
+                Number(div.style.gridColumnStart) === pos[1] + 1 &&
+                promotions.some((el) => el[0] === pos[0] && el[1] === pos[1])
+            ) {
+                div.style.boxShadow = "inset 0 0 0 7px #ffd60a";
+            }
         });
     });
 };
 
 export const onPawnDrop = (e, board, dragging) => {
     const clickedPeace = dragging.peace;
-    const color = clickedPeace.type;
-
-    const operators = {
-        white: (a, b) => a - b,
-        black: (a, b) => a + b,
-    };
     let validPositions = pawnBasicPositions(dragging.r, dragging.c, board);
     let diagonals = pawnDiagonalPositions(dragging.r, dragging.c, board);
+    let promotions = pawnPromotionPositions(dragging.r, dragging.c, board);
 
     if (diagonals.length > 0) {
         diagonals.forEach((pos) => {
@@ -56,9 +61,25 @@ export const onPawnDrop = (e, board, dragging) => {
                 Number(e.target.style.gridRowStart) === pos[0] + 1 &&
                 Number(e.target.style.gridColumnStart) === pos[1] + 1
             ) {
-                board[dragging.r][dragging.c] = 0;
-                board[pos[0]][pos[1]] = clickedPeace;
-                clickedPeace.turn++;
+                if (
+                    promotions.some(
+                        (el) => el[0] === pos[0] && el[1] === pos[0]
+                    )
+                ) {
+                    const type =
+                        clickedPeace.type === "white" ? "QUEEN" : "queen";
+
+                    board[dragging.r][dragging.c] = 0;
+                    board[pos[0]][pos[1]] = {
+                        id: type,
+                        type: clickedPeace.type,
+                        url: `/img/peaces/${type}.png`,
+                    };
+                } else {
+                    board[dragging.r][dragging.c] = 0;
+                    board[pos[0]][pos[1]] = clickedPeace;
+                    clickedPeace.turn++;
+                }
             }
         });
     }
@@ -67,9 +88,20 @@ export const onPawnDrop = (e, board, dragging) => {
             Number(e.target.style.gridRowStart) === pos[0] + 1 &&
             Number(e.target.style.gridColumnStart) === pos[1] + 1
         ) {
-            board[dragging.r][dragging.c] = 0;
-            board[pos[0]][pos[1]] = clickedPeace;
-            clickedPeace.turn++;
+            if (promotions.some((el) => el[0] === pos[0] && el[1] === pos[0])) {
+                const type = clickedPeace.type === "white" ? "QUEEN" : "queen";
+
+                board[dragging.r][dragging.c] = 0;
+                board[pos[0]][pos[1]] = {
+                    id: type,
+                    type: clickedPeace.type,
+                    url: `/img/peaces/${type}.png`,
+                };
+            } else {
+                board[dragging.r][dragging.c] = 0;
+                board[pos[0]][pos[1]] = clickedPeace;
+                clickedPeace.turn++;
+            }
         }
     });
 };
