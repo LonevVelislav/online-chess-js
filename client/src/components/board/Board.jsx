@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import AuthContext from "../../contexts/AuthContext";
+import useDidMountEffect from "../../hooks/didMountHook";
 
 //peace movements
 import {
@@ -37,7 +38,7 @@ const socket = io.connect("http://192.168.103:3010");
 export default function Board() {
     const navigate = useNavigate();
 
-    const { userId } = useContext(AuthContext);
+    const { username, userId } = useContext(AuthContext);
     const { id } = useParams();
 
     const [player1, setPlayer1] = useState({});
@@ -45,6 +46,9 @@ export default function Board() {
     const [boardState, setBoardState] = useState([]);
     const [turnState, setTurnState] = useState("");
     const [loading, setLoading] = useState(true);
+
+    const [messageValue, setMessageValue] = useState("");
+    const [messageElement, setMessageElement] = useState({});
 
     useEffect(() => {
         socket.emit("join_room", id);
@@ -72,7 +76,20 @@ export default function Board() {
             setBoardState(data.board);
             setTurnState(data.turn);
         });
+
+        socket.on("recieve_game_message", (payload) => {
+            payload.oponent = true;
+            setMessageElement(payload);
+        });
     }, [socket]);
+
+    useDidMountEffect(() => {
+        if (messageElement.message) {
+            const element = createGameMessageElement(messageElement);
+            document.querySelector(".game-chat").appendChild(element);
+            setMessageElement({});
+        }
+    }, [messageElement.message]);
 
     function sendData(board, colorTurn) {
         let data = {
@@ -85,6 +102,32 @@ export default function Board() {
         setTurnState(data.turn);
 
         socket.emit("send_game", data);
+    }
+
+    function sendMessageData(e) {
+        e.preventDefault();
+        if (messageValue) {
+            let payload = {
+                message: messageValue,
+                room: id,
+            };
+            setMessageValue("");
+            setMessageElement(payload);
+
+            socket.emit("send_game_message", payload);
+        }
+    }
+
+    function createGameMessageElement(data) {
+        const div = document.createElement("div");
+        div.className = "game-chat-element";
+        const p = document.createElement("p");
+        p.textContent = data.message;
+        div.appendChild(p);
+        if (data.oponent) {
+            div.style.textAlign = "end";
+        }
+        return div;
     }
 
     const patchServerBoard = (board, turn) => {
@@ -105,6 +148,36 @@ export default function Board() {
             })
             .catch((err) => navigate("/404"));
     };
+
+    function onChatBntClick(e) {
+        const btn = e.target;
+        const chatElement = document.querySelector(".game-chat-room");
+        if (btn.className.includes("closed")) {
+            chatElement.classList.add("chat-open");
+            btn.classList.remove("closed");
+            btn.classList.add("open");
+            if (player2._id === userId) {
+                if (window.matchMedia("(max-width: 70rem)").matches) {
+                    document.querySelector(".board").style.transform =
+                        "translateY(40%)";
+                }
+            } else {
+                if (window.matchMedia("(max-width: 70rem)").matches) {
+                    document.querySelector(".board").style.transform =
+                        "translateY(-40%)";
+                }
+            }
+        } else {
+            chatElement.classList.remove("chat-open");
+            btn.classList.remove("open");
+            btn.classList.add("closed");
+
+            if (window.matchMedia("(max-width: 70rem)").matches) {
+                document.querySelector(".board").style.transform =
+                    "translateY(0)";
+            }
+        }
+    }
 
     function renderBoard() {
         const players = {
@@ -339,6 +412,30 @@ export default function Board() {
             <Link className="home-btn" to="/">
                 &larr; home
             </Link>
+
+            <button className="closed chat-btn" onClick={onChatBntClick}>
+                &#x270D;
+            </button>
+            <div className="game-chat-room">
+                <form onSubmit={sendMessageData}>
+                    <input
+                        className="btn btn-connect"
+                        type="submit"
+                        value="send"
+                    ></input>
+                    <input
+                        className="chat-room-input"
+                        type="text"
+                        placeholder="message..."
+                        onChange={(e) => {
+                            e.preventDefault();
+                            setMessageValue(e.target.value);
+                        }}
+                        value={messageValue}
+                    />
+                </form>
+                <div className="game-chat"></div>
+            </div>
 
             <div
                 className={

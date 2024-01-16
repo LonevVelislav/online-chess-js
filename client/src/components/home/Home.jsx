@@ -32,7 +32,6 @@ export default function Home() {
         });
     }, [socket]);
     useDidMountEffect(() => {
-        console.log("reset message");
         if (messageElement.message) {
             const element = createChatElement(messageElement);
             document.querySelector(".home-chat-room").appendChild(element);
@@ -103,6 +102,9 @@ export default function Home() {
                         </div>
 
                         <div className="home-games-list-container">
+                            <button className="btn btn-connect refresh">
+                                &#9853;
+                            </button>
                             <ul className="home-games-list">
                                 {games.map((el) => {
                                     const canJoin =

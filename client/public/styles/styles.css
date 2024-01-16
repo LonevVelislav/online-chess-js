@@ -122,12 +122,9 @@ button:focus {
   padding: 0.8rem;
   color: #404255;
   margin-bottom: 1.2rem;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
-.home-chat-room ul {
-  list-style: none;
-  font-size: 1.6rem;
-}
-
 .chat-list-item {
   display: flex;
   align-items: center;
@@ -193,6 +190,9 @@ button:focus {
   left: 0;
   background: #99d98c;
 }
+.refresh {
+  font-size: 4rem;
+}
 /* home --------*/
 
 /*login/register-----------*/
@@ -227,7 +227,6 @@ button:focus {
   width: 100vmin;
   height: 100vmin;
   display: grid;
-  /* position: relative; */
   grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(8, 1fr);
 }
@@ -250,6 +249,7 @@ button:focus {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: -1;
 }
 .board-player1 span {
   margin: 0.8rem;
@@ -262,13 +262,78 @@ button:focus {
   padding: 1.2rem;
   border-radius: 5px;
   position: fixed;
-  top: 90%;
+  bottom: 0;
   right: 0;
+  z-index: -1;
 }
 
 .board-player2 span {
   margin: 0.8rem;
   color: #fdf0d5;
+}
+.game-chat-room {
+  background-color: #404255;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 20%;
+  transform: translateX(100%);
+  transition: all 0.5s;
+
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+.game-chat-room form {
+  display: flex;
+}
+.game-chat {
+  overflow: scroll;
+  height: 50vh;
+  background-color: #fdf0d5;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 5px #404255;
+}
+.game-chat div {
+  color: #404255;
+}
+.chat-btn {
+  position: fixed;
+  top: 0;
+  right: 0;
+  font-size: 5rem;
+  background-color: #404255;
+  color: #fdf0d5;
+  border: none;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.open {
+  background-color: #fdf0d5;
+  color: #404255;
+  z-index: 1;
+  right: 20%;
+}
+.close {
+  background-color: #404255;
+  color: #fdf0d5;
+}
+.chat-btn:active,
+.chat-btn:hover {
+  background-color: #fdf0d5;
+  color: #404255;
+}
+
+.chat-open {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateX(0);
+}
+.game-chat-element {
+  font-size: 1.8rem;
+  color: #404255;
+  margin: 1.2rem;
 }
 
 /* board ----------*/
@@ -286,9 +351,21 @@ button:focus {
 
 /*media queries--------------*/
 
-@media (max-width: 70em) {
+@media (max-width: 70rem) {
   html {
     font-size: 47%;
+  }
+  .chat-btn {
+    font-size: 4rem;
+  }
+  .game-chat-room {
+    width: 100%;
+    top: 63%;
+    z-index: 1;
+  }
+  .open {
+    right: 0;
+    z-index: 2;
   }
 
   .home-btn {

@@ -29,6 +29,9 @@ io.on("connection", (socket) => {
     socket.on("send_game", (data) => {
         socket.to(data.room).emit("recieve_game", data);
     });
+    socket.on("send_game_message", (data) => {
+        socket.to(data.room).emit("recieve_game_message", data);
+    });
 
     socket.on("send_message", (data) => {
         socket.broadcast.emit("recieve_message", data);
