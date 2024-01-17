@@ -59,7 +59,9 @@ export const onPawnDrop = (e, board, dragging) => {
         diagonals.forEach((pos) => {
             if (
                 Number(e.target.style.gridRowStart) === pos[0] + 1 &&
-                Number(e.target.style.gridColumnStart) === pos[1] + 1
+                Number(e.target.style.gridColumnStart) === pos[1] + 1 &&
+                board[pos[0]][pos[1]].id !== "king" &&
+                board[pos[0]][pos[1]].id !== "KING"
             ) {
                 if (
                     promotions.some(

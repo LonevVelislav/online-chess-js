@@ -26,7 +26,7 @@ body {
 }
 
 .btn {
-  padding: 0.8rem;
+  padding: 0.8rem 1.2rem;
   color: #404255;
   cursor: pointer;
   transition: all 0.2s;
@@ -117,7 +117,8 @@ button:focus {
 .chat-room-input {
   width: 100%;
   height: 100%;
-  font-size: 1.6rem;
+  position: relative;
+  font-size: 1.8rem;
   background-color: #fdf0d5;
   padding: 0.8rem;
   color: #404255;
@@ -125,6 +126,7 @@ button:focus {
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
+
 .chat-list-item {
   display: flex;
   align-items: center;
@@ -191,7 +193,8 @@ button:focus {
   background: #99d98c;
 }
 .refresh {
-  font-size: 4rem;
+  font-size: 2rem;
+  padding: 0.4rem 0.8rem;
 }
 /* home --------*/
 
@@ -273,7 +276,7 @@ button:focus {
 }
 .game-chat-room {
   background-color: #404255;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   width: 20%;
@@ -285,10 +288,26 @@ button:focus {
   visibility: hidden;
 }
 .game-chat-room form {
-  display: flex;
+  position: relative;
+}
+.send-message-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  font-size: 3rem;
+  background-color: transparent;
+  border: none;
+  padding: 0.4rem;
+  transition: all 0.1s;
+}
+.send-message-btn :hover {
+  color: #99d98c;
+  cursor: pointer;
 }
 .game-chat {
-  overflow: scroll;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
   height: 50vh;
   background-color: #fdf0d5;
   border-radius: 3px;
@@ -299,29 +318,22 @@ button:focus {
 }
 .chat-btn {
   position: fixed;
+  background-color: transparent;
   top: 0;
   right: 0;
-  font-size: 5rem;
-  background-color: #404255;
-  color: #fdf0d5;
+  font-size: 4rem;
+  padding: 0.8rem 1rem;
   border: none;
   cursor: pointer;
   transition: all 0.5s;
 }
 .open {
-  background-color: #fdf0d5;
-  color: #404255;
+  color: #99d98c;
   z-index: 1;
   right: 20%;
 }
-.close {
-  background-color: #404255;
+.closed {
   color: #fdf0d5;
-}
-.chat-btn:active,
-.chat-btn:hover {
-  background-color: #fdf0d5;
-  color: #404255;
 }
 
 .chat-open {
@@ -331,9 +343,10 @@ button:focus {
   transform: translateX(0);
 }
 .game-chat-element {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #404255;
   margin: 1.2rem;
+  font-weight: 700;
 }
 
 /* board ----------*/
@@ -355,13 +368,17 @@ button:focus {
   html {
     font-size: 47%;
   }
-  .chat-btn {
-    font-size: 4rem;
-  }
   .game-chat-room {
     width: 100%;
     top: 63%;
     z-index: 1;
+  }
+  .game-chat {
+    overflow: auto;
+    white-space: nowrap;
+    padding-bottom: 3rem;
+    width: 100%;
+    height: 30vh;
   }
   .open {
     right: 0;

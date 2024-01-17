@@ -1,10 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const app = express();
 const http = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
+const app = express();
 
 app.use(cors());
 
@@ -24,6 +24,10 @@ io.on("connection", (socket) => {
 
     socket.on("join_room", (data) => {
         socket.join(data);
+    });
+
+    socket.on("send_player_data", (data) => {
+        socket.to(data.room).emit("recieve_player_data", data);
     });
 
     socket.on("send_game", (data) => {

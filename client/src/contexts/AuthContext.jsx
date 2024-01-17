@@ -1,10 +1,12 @@
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 
 import useAuthState from "../hooks/useAuthState";
 
 const AuthContext = createContext();
 
+const socket = io.connect("http://192.168.103:3010");
 export const AuthProveder = ({ children }) => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
@@ -151,12 +153,21 @@ export const AuthProveder = ({ children }) => {
             .then((data) => data.json())
             .then((res) => {
                 if (res.status === "success") {
+                    const playerData = {
+                        _id: auth._id,
+                        username: auth.username,
+                        image: auth.image,
+                        room: id,
+                    };
+                    socket.emit("send_player_data", playerData);
+
                     setAuth((state) => {
                         return {
                             ...state,
                             playing: true,
                         };
                     });
+
                     navigate(`/board/${id}`);
                 }
                 if (res.status === "fail") {
@@ -177,6 +188,11 @@ export const AuthProveder = ({ children }) => {
             .then((res) => {
                 if (res.status === "success") {
                     setAuth((state) => {
+                        const playerData = {
+                            room: id,
+                        };
+                        socket.emit("send_player_data", playerData);
+
                         return {
                             ...state,
                             playing: false,

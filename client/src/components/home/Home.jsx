@@ -102,8 +102,11 @@ export default function Home() {
                         </div>
 
                         <div className="home-games-list-container">
-                            <button className="btn btn-connect refresh">
-                                &#9853;
+                            <button
+                                className="btn btn-connect refresh"
+                                onClick={() => location.reload()}
+                            >
+                                &#x21bb;
                             </button>
                             <ul className="home-games-list">
                                 {games.map((el) => {

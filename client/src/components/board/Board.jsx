@@ -1,3 +1,6 @@
+import { SlBubbles } from "react-icons/sl";
+import { SlActionRedo } from "react-icons/sl";
+
 import { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
@@ -72,6 +75,18 @@ export default function Board() {
     }, []);
 
     useEffect(() => {
+        socket.on("recieve_player_data", (data) => {
+            if (data.username) {
+                setPlayer2({
+                    username: data.username,
+                    _id: data._id,
+                    image: data.image,
+                });
+            } else {
+                setPlayer2({});
+            }
+        });
+
         socket.on("recieve_game", (data) => {
             setBoardState(data.board);
             setTurnState(data.turn);
@@ -85,8 +100,14 @@ export default function Board() {
 
     useDidMountEffect(() => {
         if (messageElement.message) {
+            const chatElement = document.querySelector(".game-chat");
             const element = createGameMessageElement(messageElement);
-            document.querySelector(".game-chat").appendChild(element);
+            chatElement.appendChild(element);
+
+            chatElement.scrollTop =
+                element.offsetTop -
+                (chatElement.offsetHeight - element.offsetHeight) / 2;
+
             setMessageElement({});
         }
     }, [messageElement.message]);
@@ -124,9 +145,11 @@ export default function Board() {
         const p = document.createElement("p");
         p.textContent = data.message;
         div.appendChild(p);
+        div.style.textAlign = "end";
         if (data.oponent) {
-            div.style.textAlign = "end";
+            div.style.textAlign = "start";
         }
+
         return div;
     }
 
@@ -414,15 +437,11 @@ export default function Board() {
             </Link>
 
             <button className="closed chat-btn" onClick={onChatBntClick}>
-                &#x270D;
+                <SlBubbles style={{ pointerEvents: "none" }} />
             </button>
             <div className="game-chat-room">
+                <div className="game-chat"></div>
                 <form onSubmit={sendMessageData}>
-                    <input
-                        className="btn btn-connect"
-                        type="submit"
-                        value="send"
-                    ></input>
                     <input
                         className="chat-room-input"
                         type="text"
@@ -433,8 +452,14 @@ export default function Board() {
                         }}
                         value={messageValue}
                     />
+                    <button className="send-message-btn" type="submit">
+                        <SlActionRedo
+                            style={{
+                                color: "#404255",
+                            }}
+                        />
+                    </button>
                 </form>
-                <div className="game-chat"></div>
             </div>
 
             <div
