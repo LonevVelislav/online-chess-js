@@ -5,6 +5,7 @@ const http = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
 const app = express();
+const PORT = process.env.PORT || 3030;
 
 app.use(cors());
 
@@ -47,9 +48,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 mongoose
-    .connect(
-        process.env.DATABASE.replace("<PASSWORD>", process.env.PASSWORD_DB)
-    )
+    .connect(process.env.DATABASE.replace("<PASSWORD>", PORT))
     .then(() => console.log("DB connection successfull"))
     .catch((err) => console.log("Failed to connect to DB!"));
 
