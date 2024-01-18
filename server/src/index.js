@@ -48,16 +48,17 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 mongoose
-    .connect(process.env.DATABASE.replace("<PASSWORD>", PORT))
+    .connect(
+        process.env.DATABASE.replace("<PASSWORD>", process.env.PASSWORD_DB)
+    )
     .then(() => console.log("DB connection successfull"))
     .catch((err) => console.log("Failed to connect to DB!"));
 
 app.use("/", router);
 app.use("*", (req, res) => {
     res.redirect("/404");
-    cd;
 });
 
 server.listen(process.env.PORT, () =>
-    console.log(`app is running on port... ${process.env.PORT}`)
+    console.log(`app is running on port... ${PORT}`)
 );
