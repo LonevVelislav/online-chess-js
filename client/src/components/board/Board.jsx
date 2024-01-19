@@ -104,6 +104,10 @@ export default function Board() {
         if (messageElement.message) {
             const chatElement = document.querySelector(".game-chat");
             const element = createGameMessageElement(messageElement);
+            const chatButton = document.querySelector(".chat-btn");
+            if (chatButton.className.includes("closed")) {
+                chatButton.classList.add("animate");
+            }
             chatElement.appendChild(element);
 
             chatElement.scrollTop =
@@ -179,6 +183,7 @@ export default function Board() {
         const chatElement = document.querySelector(".game-chat-room");
         if (btn.className.includes("closed")) {
             chatElement.classList.add("chat-open");
+            document.querySelector(".chat-btn").classList.remove("animate");
             btn.classList.remove("closed");
             btn.classList.add("open");
             if (player2._id === userId) {
@@ -473,6 +478,10 @@ export default function Board() {
                     className="avatar avatar-game "
                     src={`${config.host}/photos/${player1._id}/${player1.image}`}
                     alt={player1.image}
+                    style={{
+                        boxShadow:
+                            turnState === "white" ? "0 0 30px #ffffff" : "",
+                    }}
                 />
                 <span>{player1.username}</span>
             </div>
@@ -492,6 +501,10 @@ export default function Board() {
                     className="avatar avatar-game"
                     src={`${config.host}/photos/${player2?._id}/${player2?.image}`}
                     alt={player2?.image}
+                    style={{
+                        boxShadow:
+                            turnState === "black" ? "0 0 30px #ffffff" : "",
+                    }}
                 />
             </div>
         </>

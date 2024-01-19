@@ -69,11 +69,13 @@ export const onPawnDrop = (e, board, dragging) => {
                     )
                 ) {
                     const type =
-                        clickedPeace.type === "white" ? "QUEEN" : "queen";
+                        clickedPeace.type === "white"
+                            ? "queen-white"
+                            : "queen-black";
 
                     board[dragging.r][dragging.c] = 0;
                     board[pos[0]][pos[1]] = {
-                        id: type,
+                        id: clickedPeace.type === "white" ? "QUEEN" : "queen",
                         type: clickedPeace.type,
                         url: `/img/peaces/${type}.png`,
                     };
@@ -91,11 +93,14 @@ export const onPawnDrop = (e, board, dragging) => {
             Number(e.target.style.gridColumnStart) === pos[1] + 1
         ) {
             if (promotions.some((el) => el[0] === pos[0] && el[1] === pos[0])) {
-                const type = clickedPeace.type === "white" ? "QUEEN" : "queen";
+                const type =
+                    clickedPeace.type === "white"
+                        ? "queen-white"
+                        : "queen-black";
 
                 board[dragging.r][dragging.c] = 0;
                 board[pos[0]][pos[1]] = {
-                    id: type,
+                    id: clickedPeace.type === "white" ? "QUEEN" : "queen",
                     type: clickedPeace.type,
                     url: `/img/peaces/${type}.png`,
                 };
