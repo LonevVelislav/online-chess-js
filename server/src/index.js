@@ -5,11 +5,11 @@ const http = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
 const app = express();
-const PORT = process.env.PORT || 3030;
 
 app.use(cors());
 
 require("dotenv").config();
+const PORT = process.env.PORT;
 const server = http.createServer(app);
 const router = require("./router");
 
@@ -59,6 +59,4 @@ app.use("*", (req, res) => {
     res.redirect("/404");
 });
 
-server.listen(process.env.PORT, () =>
-    console.log(`app is running on port... ${PORT}`)
-);
+server.listen(PORT, () => console.log(`app is running on port... ${PORT}`));
