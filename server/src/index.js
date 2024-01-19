@@ -16,7 +16,7 @@ const router = require("./router");
 //websocket config
 const io = new Server(server, {
     cors: {
-        origin: process.env.HOST,
+        origin: process.env.CLIENT,
         methods: ["GET", "POST", "PATCH"],
     },
 });
