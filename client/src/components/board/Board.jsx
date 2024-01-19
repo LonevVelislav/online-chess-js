@@ -1,3 +1,5 @@
+import config from "../../config";
+
 import { SlBubbles } from "react-icons/sl";
 import { SlActionRedo } from "react-icons/sl";
 
@@ -36,12 +38,12 @@ import {
 
 //-----------
 
-const socket = io.connect("http://192.168.103:3010");
+const socket = io.connect(config.host);
 
 export default function Board() {
     const navigate = useNavigate();
 
-    const { username, userId } = useContext(AuthContext);
+    const { userId } = useContext(AuthContext);
     const { id } = useParams();
 
     const [player1, setPlayer1] = useState({});
@@ -55,7 +57,7 @@ export default function Board() {
 
     useEffect(() => {
         socket.emit("join_room", id);
-        fetch(`http://192.168.103:3010/for-the-king/games/${id}`)
+        fetch(`${config.host}/for-the-king/games/${id}`)
             .then((data) => data.json())
             .then((res) => {
                 if (res.status === "success") {
@@ -154,7 +156,7 @@ export default function Board() {
     }
 
     const patchServerBoard = (board, turn) => {
-        fetch(`http://192.168.103:3010/for-the-king/games/move/${id}`, {
+        fetch(`${config.host}/for-the-king/games/move/${id}`, {
             method: "PATCH",
             body: JSON.stringify({
                 board: board,
@@ -469,7 +471,7 @@ export default function Board() {
             >
                 <img
                     className="avatar avatar-game "
-                    src={`http://192.168.0.103:3010/photos/${player1._id}/${player1.image}`}
+                    src={`${config.host}/photos/${player1._id}/${player1.image}`}
                     alt={player1.image}
                 />
                 <span>{player1.username}</span>
@@ -488,7 +490,7 @@ export default function Board() {
                 <span>{player2?.username}</span>
                 <img
                     className="avatar avatar-game"
-                    src={`http://192.168.0.103:3010/photos/${player2?._id}/${player2?.image}`}
+                    src={`${config.host}/photos/${player2?._id}/${player2?.image}`}
                     alt={player2?.image}
                 />
             </div>

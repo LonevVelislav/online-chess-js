@@ -1,3 +1,5 @@
+import config from "../../config";
+
 import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
@@ -8,7 +10,7 @@ import useDidMountEffect from "../../hooks/didMountHook";
 import GameElement from "./game-element/GameElement";
 import Login from "../login/Login";
 
-const socket = io.connect("http://192.168.103:3010");
+const socket = io.connect(config.host);
 export default function Home() {
     const navigate = useNavigate();
     const { username, isAuth, isPlaying, userId, image } =
@@ -18,7 +20,7 @@ export default function Home() {
     const [messageElement, setMessageElement] = useState({});
 
     useEffect(() => {
-        fetch("http://192.168.103:3010/for-the-king/games")
+        fetch(`${config.host}/for-the-king/games`)
             .then((data) => data.json())
             .then((res) => {
                 setGames(res.data.games);
@@ -61,7 +63,7 @@ export default function Home() {
         const imageElement = document.createElement("img");
         const span = document.createElement("span");
         const p = document.createElement("p");
-        imageElement.src = `http://192.168.0.103:3010/photos/${data.userId}/${data.image}`;
+        imageElement.src = `${config.host}/photos/${data.userId}/${data.image}`;
         imageElement.className = "avatar";
         span.textContent = `${data.username}:`;
         p.textContent = data.message;
@@ -86,7 +88,7 @@ export default function Home() {
                             <Link className="account-link" to="/account">
                                 <img
                                     className="avatar"
-                                    src={`http://192.168.0.103:3010/photos/${userId}/${image}`}
+                                    src={`${config.host}/photos/${userId}/${image}`}
                                     alt={image}
                                 />
                                 <span>{username}</span>

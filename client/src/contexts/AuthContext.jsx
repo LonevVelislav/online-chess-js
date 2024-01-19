@@ -1,3 +1,4 @@
+import config from "../config";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
@@ -6,14 +7,14 @@ import useAuthState from "../hooks/useAuthState";
 
 const AuthContext = createContext();
 
-const socket = io.connect("http://192.168.103:3010");
+const socket = io.connect(config.host);
 export const AuthProveder = ({ children }) => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
     const [auth, setAuth] = useAuthState("auth", {});
 
     const registerHandler = async (values) => {
-        fetch("http://192.168.103:3010/for-the-king/users/register", {
+        fetch(`${config.host}/for-the-king/users/register`, {
             method: "POST",
             body: JSON.stringify(values),
             headers: {
@@ -45,7 +46,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const loginHandler = async (values) => {
-        fetch("http://192.168.103:3010/for-the-king/users/login", {
+        fetch(`${config.host}/for-the-king/users/login`, {
             method: "POST",
             body: JSON.stringify(values),
             headers: {
@@ -76,7 +77,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const editAccountHandler = async (values) => {
-        fetch("http://192.168.0.103:3010/for-the-king/users/updateUser", {
+        fetch(`${config.host}/for-the-king/users/updateUser`, {
             method: "PATCH",
             body: values,
             headers: {
@@ -115,7 +116,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const createGameHandler = async () => {
-        fetch("http://192.168.103:3010/for-the-king/games", {
+        fetch(`${config.host}/for-the-king/games`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -144,7 +145,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const joinGameHandler = async (id) => {
-        fetch(`http://192.168.103:3010/for-the-king/games/join/${id}`, {
+        fetch(`${config.host}/for-the-king/games/join/${id}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -178,7 +179,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const disconnectGameHandler = async (id) => {
-        fetch(`http://192.168.103:3010/for-the-king/games/disconnect/${id}`, {
+        fetch(`${config.host}/for-the-king/games/disconnect/${id}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -215,7 +216,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const deleteGameHandler = (id) => {
-        fetch(`http://192.168.103:3010/for-the-king/games/${id}`, {
+        fetch(`${config.host}/for-the-king/games/${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,

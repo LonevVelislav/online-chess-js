@@ -1,7 +1,8 @@
+import config from "../../config";
 import { useState, useContext } from "react";
 
 import AuthContext from "../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function AccountPage() {
     const { username, image, userId, errorMessage, editAccountHandler } =
@@ -34,7 +35,7 @@ export default function AccountPage() {
 
                     <img
                         className="avatar-account"
-                        src={`http://192.168.0.103:3010/photos/${userId}/${image}`}
+                        src={`${config.host}/photos/${userId}/${image}`}
                         alt={image}
                     />
                 </div>
