@@ -11,6 +11,7 @@ router.post("/register", async (req, res) => {
         const newUser = await User.create({
             username: req.body.username,
             password: req.body.password,
+            guest: req.body.guest,
         });
 
         createAndSendToken(newUser, 200, res);

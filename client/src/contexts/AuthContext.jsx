@@ -31,6 +31,7 @@ export const AuthProveder = ({ children }) => {
                         inGame: res.data.user.inGame,
                         image: res.data.user.image,
                         token: res.token,
+                        guest: res.data.user.guest,
                     });
                     localStorage.setItem("token", res.token);
                     navigate("/");
@@ -252,6 +253,7 @@ export const AuthProveder = ({ children }) => {
         isPlaying: auth.playing,
         inGame: auth.inGame,
         image: auth.image,
+        guest: auth.guest,
     };
 
     return (

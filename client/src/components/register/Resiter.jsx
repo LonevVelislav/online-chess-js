@@ -17,6 +17,9 @@ export default function Register() {
 
     return (
         <main className="login-container">
+            <Link className="btn btn-connect" to="/">
+                &larr; Home
+            </Link>
             <h6>Register</h6>
             <form className="login-form" onSubmit={onSubmit}>
                 <div>
@@ -46,9 +49,6 @@ export default function Register() {
                 )}
 
                 <input type="submit" value="register" />
-                <p>
-                    Have an account? <Link to="/login">login</Link>
-                </p>
             </form>
         </main>
     );

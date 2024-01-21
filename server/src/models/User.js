@@ -29,7 +29,11 @@ const userSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        default: "default.jpg",
+        default: "default.jpeg",
+    },
+    guest: {
+        type: Boolean,
+        default: false,
     },
 });
 

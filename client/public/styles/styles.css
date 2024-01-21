@@ -199,6 +199,7 @@ button:focus {
 
 /*login/register-----------*/
 .login-container {
+  width: 100%;
   background-color: #fdf0d5;
   padding: 2.4rem;
   font-size: 2.4rem;

@@ -476,7 +476,11 @@ export default function Board() {
             >
                 <img
                     className="avatar avatar-game "
-                    src={`${config.host}/photos/${player1._id}/${player1.image}`}
+                    src={
+                        player1.image === "default.jpeg"
+                            ? `${config.host}/photos/${player1.image}`
+                            : `${config.host}/photos/${player1._id}/${player1.image}`
+                    }
                     alt={player1.image}
                     style={{
                         boxShadow:
@@ -499,7 +503,11 @@ export default function Board() {
                 <span>{player2?.username}</span>
                 <img
                     className="avatar avatar-game"
-                    src={`${config.host}/photos/${player2?._id}/${player2?.image}`}
+                    src={
+                        player2?.image === "default.jpeg"
+                            ? `${config.host}/photos/${player2?.image}`
+                            : `${config.host}/photos/${player2?._id}/${player2?.image}`
+                    }
                     alt={player2?.image}
                     style={{
                         boxShadow:

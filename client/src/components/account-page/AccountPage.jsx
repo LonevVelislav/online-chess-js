@@ -5,7 +5,7 @@ import AuthContext from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 export default function AccountPage() {
-    const { username, image, userId, errorMessage, editAccountHandler } =
+    const { username, image, userId, errorMessage, editAccountHandler, guest } =
         useContext(AuthContext);
     const [usernameValue, setUsernameValue] = useState(username);
 
@@ -27,18 +27,20 @@ export default function AccountPage() {
     return (
         <main className="login-container">
             <form className="login-form" onSubmit={submitEditHandler}>
-                <img />
-                <div>
-                    <label htmlFor="image">Profile picture</label>
+                {!guest && (
+                    <div>
+                        <label htmlFor="image">Profile picture</label>
 
-                    <input type="file" id="image" name="image" />
+                        <input type="file" id="image" name="image" />
 
-                    <img
-                        className="avatar-account"
-                        src={`${config.host}/photos/${userId}/${image}`}
-                        alt={image}
-                    />
-                </div>
+                        <img
+                            className="avatar-account"
+                            src={`${config.host}/photos/${userId}/${image}`}
+                            alt={image}
+                        />
+                    </div>
+                )}
+
                 <div>
                     <label htmlFor="username">username</label>
                     <input
@@ -53,7 +55,7 @@ export default function AccountPage() {
                     <input
                         type="submit"
                         className="btn btn-connect"
-                        value="Edit"
+                        value="change"
                     />
                     <Link className="btn btn-connect" to={"/"}>
                         main menu &rarr;
