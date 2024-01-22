@@ -1,6 +1,8 @@
 import config from "../config";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+
 import io from "socket.io-client";
 
 import useAuthState from "../hooks/useAuthState";
@@ -28,7 +30,6 @@ export const AuthProveder = ({ children }) => {
                         _id: res.data.user._id,
                         username: res.data.user.username,
                         playing: res.data.user.playing,
-                        inGame: res.data.user.inGame,
                         image: res.data.user.image,
                         token: res.token,
                     });
@@ -43,6 +44,20 @@ export const AuthProveder = ({ children }) => {
                 }
             })
             .catch((err) => navigate("/404"));
+    };
+
+    const checkTokenStatus = (id) => {
+        fetch(`${config.host}/for-the-king/users/exist/${id}`)
+            .then((data) => data.json())
+            .then((res) => {
+                if (res.data.exist === false) {
+                    logoutHandler();
+
+                    registerHandler({
+                        username: `guest-${uuidv4()}`,
+                    });
+                }
+            });
     };
 
     const editAccountHandler = async (values) => {
@@ -205,14 +220,13 @@ export const AuthProveder = ({ children }) => {
     };
 
     const values = {
+        checkTokenStatus,
         editAccountHandler,
         createGameHandler,
         disconnectGameHandler,
         leaveGameHandler,
         joinGameHandler,
         deleteGameHandler,
-        logoutHandler,
-        registerHandler,
         errorMessage,
         username: auth.username,
         userId: auth._id,

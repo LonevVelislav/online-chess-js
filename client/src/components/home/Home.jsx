@@ -1,5 +1,4 @@
 import config from "../../config";
-import { v4 as uuidv4 } from "uuid";
 
 import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,17 +12,14 @@ import GameElement from "./game-element/GameElement";
 const socket = io.connect(config.host);
 export default function Home() {
     const navigate = useNavigate();
-    const { username, isAuth, isPlaying, userId, image, registerHandler } =
+    const { username, isPlaying, userId, image, checkTokenStatus } =
         useContext(AuthContext);
     const [games, setGames] = useState([]);
     const [message, setMessage] = useState("");
     const [messageElement, setMessageElement] = useState({});
+
     useEffect(() => {
-        if (!isAuth) {
-            registerHandler({
-                username: `guest-${uuidv4()}`,
-            });
-        }
+        checkTokenStatus(userId);
     }, []);
 
     useEffect(() => {
