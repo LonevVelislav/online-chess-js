@@ -35,7 +35,11 @@ export default function AccountPage() {
 
                         <img
                             className="avatar-account"
-                            src={`${config.host}/photos/${userId}/${image}`}
+                            src={
+                                image === "default.jpeg"
+                                    ? `${config.host}/photos/${image}`
+                                    : `${config.host}/photos/${userId}/${image}`
+                            }
                             alt={image}
                         />
                     </div>
