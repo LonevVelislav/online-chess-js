@@ -1,5 +1,5 @@
 import config from "../../config";
-import makeid from "../../utils/makeId";
+import { v4 as uuidv4 } from "uuid";
 
 import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,24 +13,15 @@ import GameElement from "./game-element/GameElement";
 const socket = io.connect(config.host);
 export default function Home() {
     const navigate = useNavigate();
-    const {
-        username,
-        isAuth,
-        isPlaying,
-        userId,
-        image,
-        registerHandler,
-        guest,
-    } = useContext(AuthContext);
+    const { username, isAuth, isPlaying, userId, image, registerHandler } =
+        useContext(AuthContext);
     const [games, setGames] = useState([]);
     const [message, setMessage] = useState("");
     const [messageElement, setMessageElement] = useState({});
     useEffect(() => {
         if (!isAuth) {
             registerHandler({
-                username: `guest-${makeid(5)}`,
-                password: makeid(5),
-                guest: true,
+                username: `guest-${uuidv4()}`,
             });
         }
     }, []);
@@ -97,8 +88,6 @@ export default function Home() {
         element.remove();
         clearTimeout(removeElement);
     }
-    if (guest) {
-    }
 
     return (
         <main className="home-page">
@@ -118,23 +107,6 @@ export default function Home() {
                 <Link className="btn btn-connect" to="/create">
                     Create Game
                 </Link>
-
-                {guest && (
-                    <Link className="btn btn-connect" to="/register">
-                        Register
-                    </Link>
-                )}
-                {guest && (
-                    <Link className="btn btn-connect" to="/login">
-                        Login
-                    </Link>
-                )}
-
-                {!guest && (
-                    <Link className="btn btn-connect" to="/logout">
-                        logout
-                    </Link>
-                )}
             </div>
 
             <div className="home-games-list-container">

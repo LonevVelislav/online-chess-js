@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs-extra");
 const sharp = require("sharp");
@@ -10,14 +9,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "username is requred!"],
         unique: true,
         trim: true,
-        maxLength: [20, "username is too long, 20 characters max"],
-    },
-    password: {
-        type: String,
-        required: [true, "password is required!"],
-        minlength: [3, "password must be at least 3 characters long"],
-        trim: true,
-        select: false,
+        maxLength: [50, "username is too long, 50 characters max"],
     },
     playing: {
         type: Boolean,
@@ -31,18 +23,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "default.jpeg",
     },
-    guest: {
-        type: Boolean,
-        default: false,
-    },
-});
-
-userSchema.pre("save", async function (next) {
-    if (this.isNew) {
-        this.password = await bcrypt.hash(this.password, 12);
-        this.playing = false;
-    }
-    next();
 });
 
 userSchema.pre(/^find/, async function (next) {
@@ -74,13 +54,6 @@ userSchema.pre(/^find/, async function (next) {
     this.imagefile = undefined;
     next();
 });
-
-userSchema.methods.correntPassword = async function (
-    incomPassowrd,
-    correctPassword
-) {
-    return await bcrypt.compare(incomPassowrd, correctPassword);
-};
 
 const User = mongoose.model("User", userSchema);
 

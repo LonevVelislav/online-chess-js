@@ -31,38 +31,6 @@ export const AuthProveder = ({ children }) => {
                         inGame: res.data.user.inGame,
                         image: res.data.user.image,
                         token: res.token,
-                        guest: res.data.user.guest,
-                    });
-                    localStorage.setItem("token", res.token);
-                    navigate("/");
-                }
-                if (res.status === "fail") {
-                    setErrorMessage(res.message);
-                    setTimeout(() => {
-                        setErrorMessage("");
-                    }, 3000);
-                }
-            })
-            .catch((err) => navigate("/404"));
-    };
-
-    const loginHandler = async (values) => {
-        fetch(`${config.host}/for-the-king/users/login`, {
-            method: "POST",
-            body: JSON.stringify(values),
-            headers: {
-                "content-type": "application/json",
-            },
-        })
-            .then((data) => data.json())
-            .then((res) => {
-                if (res.status === "success") {
-                    setAuth({
-                        _id: res.data.user._id,
-                        username: res.data.user.username,
-                        playing: res.data.user.playing,
-                        image: res.data.user.image,
-                        token: res.token,
                     });
                     localStorage.setItem("token", res.token);
                     navigate("/");
@@ -245,7 +213,6 @@ export const AuthProveder = ({ children }) => {
         deleteGameHandler,
         logoutHandler,
         registerHandler,
-        loginHandler,
         errorMessage,
         username: auth.username,
         userId: auth._id,
@@ -253,7 +220,6 @@ export const AuthProveder = ({ children }) => {
         isPlaying: auth.playing,
         inGame: auth.inGame,
         image: auth.image,
-        guest: auth.guest,
     };
 
     return (
