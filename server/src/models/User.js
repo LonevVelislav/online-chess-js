@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     playing: {
         type: Boolean,
+        default: false,
     },
     imagefile: {
         type: Object,
