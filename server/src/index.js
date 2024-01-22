@@ -49,7 +49,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 mongoose
     .connect(process.env.DATABASE)
-    .then(() => console.log("DB connection successfull"))
+    .then(() => {
+        console.log("DB connection successfull");
+    })
     .catch((err) => console.log("Failed to connect to DB!"));
 
 app.use("/", router);
