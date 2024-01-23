@@ -1,7 +1,6 @@
 import config from "../config";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
 import io from "socket.io-client";
 
@@ -44,20 +43,6 @@ export const AuthProveder = ({ children }) => {
                 }
             })
             .catch((err) => navigate("/404"));
-    };
-
-    const checkTokenStatus = (id) => {
-        fetch(`${config.host}/for-the-king/users/exist/${id}`)
-            .then((data) => data.json())
-            .then((res) => {
-                if (res.data.exist === false) {
-                    logoutHandler();
-
-                    registerHandler({
-                        username: `guest-${uuidv4()}`,
-                    });
-                }
-            });
     };
 
     const editAccountHandler = async (values) => {
@@ -220,7 +205,7 @@ export const AuthProveder = ({ children }) => {
     };
 
     const values = {
-        checkTokenStatus,
+        registerHandler,
         editAccountHandler,
         createGameHandler,
         disconnectGameHandler,

@@ -1,4 +1,5 @@
 import config from "../../config";
+import uuid from "react-uuid";
 
 import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,14 +13,27 @@ import GameElement from "./game-element/GameElement";
 const socket = io.connect(config.host);
 export default function Home() {
     const navigate = useNavigate();
-    const { username, isPlaying, userId, image, checkTokenStatus } =
+    const { username, isAuth, isPlaying, userId, image, registerHandler } =
         useContext(AuthContext);
     const [games, setGames] = useState([]);
     const [message, setMessage] = useState("");
     const [messageElement, setMessageElement] = useState({});
 
     useEffect(() => {
-        checkTokenStatus(userId);
+        const string = uuid().slice(0, 8);
+        const username = `user-${string}`;
+        if (isAuth) {
+            fetch(`${config.host}/for-the-king/users`)
+                .then((data) => data.json())
+                .then((res) => {
+                    if (res.data.users.every((el) => el._id !== userId)) {
+                        registerHandler({ username });
+                    }
+                })
+                .catch((err) => navigate("/404"));
+        } else {
+            registerHandler({ username });
+        }
     }, []);
 
     useEffect(() => {
@@ -113,37 +127,38 @@ export default function Home() {
                     &#x21bb;
                 </button>
                 <ul className="home-games-list">
-                    {games.map((el) => {
-                        const canJoin =
-                            el.host !== userId &&
-                            el.player2 === undefined &&
-                            isPlaying === false;
+                    {games &&
+                        games.map((el) => {
+                            const canJoin =
+                                el.host !== userId &&
+                                el.player2 === undefined &&
+                                isPlaying === false;
 
-                        const myGame =
-                            el.player1._id === userId ||
-                            el.player2?._id === userId;
+                            const myGame =
+                                el.player1._id === userId ||
+                                el.player2?._id === userId;
 
-                        const host = el.player1._id === userId;
+                            const host = el.player1._id === userId;
 
-                        const secondPlayer =
-                            el.player1._id !== userId &&
-                            el.player2?._id === userId;
+                            const secondPlayer =
+                                el.player1._id !== userId &&
+                                el.player2?._id === userId;
 
-                        if (myGame || canJoin) {
-                            return (
-                                <GameElement
-                                    key={el._id}
-                                    gameId={el._id}
-                                    player1={el.player1}
-                                    player2={el.player2}
-                                    canJoin={canJoin}
-                                    myGame={myGame}
-                                    host={host}
-                                    secondPlayer={secondPlayer}
-                                />
-                            );
-                        }
-                    })}
+                            if (myGame || canJoin) {
+                                return (
+                                    <GameElement
+                                        key={el._id}
+                                        gameId={el._id}
+                                        player1={el.player1}
+                                        player2={el.player2}
+                                        canJoin={canJoin}
+                                        myGame={myGame}
+                                        host={host}
+                                        secondPlayer={secondPlayer}
+                                    />
+                                );
+                            }
+                        })}
                 </ul>
             </div>
             <div className="home-chat-room">

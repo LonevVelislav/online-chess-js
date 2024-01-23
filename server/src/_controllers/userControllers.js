@@ -6,25 +6,16 @@ const uploadPhoto = require("../middlewares/uploadPhoto");
 const { createAndSendToken } = require("../utils/userToken");
 const { protect } = require("../middlewares/authMiddleware");
 
-router.get("/exist/:id", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        const userExist = await User.findById(req.params.id);
-        console.log(userExist);
-        if (userExist) {
-            res.status(200).json({
-                status: "success",
-                data: {
-                    exist: true,
-                },
-            });
-        } else {
-            res.status(200).json({
-                status: "success",
-                data: {
-                    exist: false,
-                },
-            });
-        }
+        const users = await User.find();
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                users,
+            },
+        });
     } catch (err) {
         res.status(400).json({
             status: "fail",
